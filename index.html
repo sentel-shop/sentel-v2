@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>SENTEL PARFUMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--noir:#050505;--gold:#c9a55c;--gold2:#e8d4a2;--rose:#8c5a5a;--cream:#f5efe6;--gray:#7a736c;--radius:14px;--max-w:1400px}
+html,body{overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Tajawal',-apple-system,sans-serif;background:var(--noir);color:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+img,svg{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:inherit;text-decoration:none}
+.neon-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.neon-bg .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;transition:background 1.2s ease,opacity 1.2s ease}
+.blob-1{width:400px;height:400px;top:-100px;left:-100px;background:radial-gradient(circle,var(--gold),transparent 70%);animation:float1 18s ease-in-out infinite}
+.blob-2{width:350px;height:350px;bottom:-50px;right:-100px;background:radial-gradient(circle,var(--rose),transparent 70%);animation:float2 22s ease-in-out infinite}
+.blob-3{width:300px;height:300px;top:40%;left:50%;background:radial-gradient(circle,#e0a850,transparent 70%);animation:float1 25s ease-in-out infinite;opacity:.3}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,60px) scale(1.2)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-80px,-60px) scale(1.15)}}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 22px;background:linear-gradient(180deg,rgba(5,5,5,.85),transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:.3s}
+.topbar.scrolled{background:rgba(5,5,5,.9);border-bottom:1px solid rgba(201,165,92,.15);padding:12px 22px}
+.topbar-inner{max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand-mini{display:flex;align-items:center;gap:10px}
+.brand-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--noir);box-shadow:0 4px 14px rgba(201,165,92,.4)}
+.brand-text{font-family:'Cormorant Garamond',serif;letter-spacing:3px;font-weight:700;font-size:16px}
+.brand-text small{display:block;font-family:'Tajawal',sans-serif;font-size:8px;color:var(--gold);letter-spacing:2px;font-weight:400}
+.top-nav{display:none;gap:26px;align-items:center}
+.top-nav a{font-size:13.5px;color:#c8c0b8;font-weight:500;transition:.2s;cursor:pointer}
+.top-nav a:hover{color:var(--gold)}
+.menu-btn{width:42px;height:42px;border-radius:50%;border:1px solid rgba(201,165,92,.3);display:flex;align-items:center;justify-content:center;color:var(--gold);transition:.2s}
+.menu-btn:hover{background:rgba(201,165,92,.15)}
+.menu-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+.side-nav{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:14px;transition:.4s}
+.side-nav.hidden{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(60px)}
+.side-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.side-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:rgba(201,165,92,.35);transition:.3s}
+.side-dot.active::before{background:var(--gold);width:11px;height:11px;box-shadow:0 0 20px var(--gold)}
+.side-dot .label{position:absolute;right:38px;top:50%;transform:translateY(-50%) translateX(10px);background:rgba(5,5,5,.95);color:var(--gold);padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:.3s;border:1px solid rgba(201,165,92,.3)}
+.side-dot:hover .label,.side-dot.active .label{opacity:1;transform:translateY(-50%) translateX(0)}
+.hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 80px;overflow:hidden}
+.hero-content{text-align:center;margin-bottom:20px;position:relative;z-index:3;max-width:800px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:30px;background:rgba(201,165,92,.1);border:1px solid rgba(201,165,92,.3);font-size:11px;color:var(--gold2);letter-spacing:3px;margin-bottom:24px;text-transform:uppercase}
+.hero-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:dotPulse 2s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,9vw,80px);font-weight:700;line-height:.95;letter-spacing:-2px;margin-bottom:20px}
+.hero h1 em{font-style:italic;font-weight:400;background:linear-gradient(135deg,var(--gold2),var(--gold),var(--rose));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:clamp(14px,1.6vw,18px);color:#a8a09a;max-width:520px;margin:0 auto 20px}
+.bottle-stage{position:relative;width:100%;max-width:340px;height:420px;margin:6px auto 0;perspective:1200px;transform-style:preserve-3d}
+.bottle-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(201,165,92,.35),transparent 55%);filter:blur(30px);animation:pulseGlow 4s ease-in-out infinite;transition:background 1s ease}
+@keyframes pulseGlow{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+.bottle-3d{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d;animation:rotate3D 20s linear infinite;transition:opacity .6s ease,transform .8s cubic-bezier(.2,1,.3,1)}
+@keyframes rotate3D{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
+.bottle-3d svg,.bottle-3d img{width:80%;height:auto;filter:drop-shadow(0 30px 60px rgba(0,0,0,.7))}
+.bottle-3d.fading{opacity:0;transform:scale(.85)}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--gold);opacity:.6;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-500px) scale(.3);opacity:0}}
+.scroll-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--gold);font-size:10px;letter-spacing:3px;opacity:.7}
+.scroll-hint .line{width:1px;height:40px;background:linear-gradient(180deg,var(--gold),transparent);animation:scrollLine 2s ease-in-out infinite}
+@keyframes scrollLine{0%,100%{transform:scaleY(.3);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+.hero-product{text-align:center;margin-top:12px;position:relative;z-index:3;transition:opacity .5s ease}
+.hero-product.fading{opacity:0}
+.hero-product .cat{font-size:10px;color:var(--gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:6px;font-weight:600}
+.hero-product .name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;letter-spacing:2px}
+.hero-product .price{font-size:12px;color:var(--gray);margin-top:4px}
+.sec{position:relative;z-index:2;padding:100px 24px;max-width:var(--max-w);margin:0 auto;width:100%}
+.sec-eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.sec-eyebrow::before{content:"";width:30px;height:1px;background:var(--gold)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5vw,52px);font-weight:700;line-height:1;letter-spacing:-1px;margin-bottom:14px}
+.sec-title em{font-style:italic;color:var(--gold)}
+.sec-desc{color:#a8a09a;font-size:14px;line-height:1.7;max-width:400px}
+.notes-wrap{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:20px;min-height:480px;margin-top:40px;max-width:700px;margin-left:auto;margin-right:auto}
+.notes-lines{position:absolute;inset:0;pointer-events:none;z-index:1}
+.notes-lines svg{width:100%;height:100%}
+.notes-lines path{stroke:var(--gold);stroke-width:1;fill:none;stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset 1.5s ease;opacity:.4}
+.notes-lines.show path{stroke-dashoffset:0}
+.notes-lines .dot{fill:var(--gold);opacity:0;transition:opacity .5s ease}
+.notes-lines.show .dot{opacity:1}
+.note-item{display:flex;align-items:center;padding:14px 0;opacity:0;transform:translateX(-20px);transition:.8s cubic-bezier(.2,1,.3,1)}
+.note-item.right{transform:translateX(20px);justify-content:flex-end}
+.note-item.show{opacity:1;transform:translateX(0)}
+.note-card{background:rgba(255,255,255,.03);border:1px solid rgba(201,165,92,.2);border-radius:14px;padding:12px 16px;backdrop-filter:blur(10px);max-width:200px;transition:border-color .5s ease,box-shadow .5s ease}
+.note-card.updating{border-color:rgba(201,165,92,.6);box-shadow:0 0 30px rgba(201,165,92,.25)}
+.note-card h4{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold);letter-spacing:1px;margin-bottom:2px}
+.note-card p{font-size:12px;color:#a8a09a;line-height:1.5;transition:opacity .4s ease}
+.note-card p.fading{opacity:0}
+.note-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 20px var(--gold);flex-shrink:0;animation:dotPulse 2s ease-in-out infinite}
+.notes-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1s ease}
+.notes-center.show{opacity:1}
+.notes-center .mini-bottle{width:100%;animation:rotate3D 15s linear infinite;transition:opacity .5s ease}
+.notes-center .mini-bottle.fading{opacity:0}
+.notes-center svg,.notes-center img{width:100%;height:auto}
+.carousel-section{position:relative;z-index:2;padding:80px 0 100px;overflow:hidden;transition:background 1.2s ease}
+.carousel-stage{position:relative;width:100%;height:520px;perspective:1400px;transform-style:preserve-3d}
+.carousel-3d{position:absolute;left:50%;top:50%;width:200px;height:280px;transform-style:preserve-3d;transform:translate(-50%,-50%) rotateY(0deg);will-change:transform}
+.carousel-item{position:absolute;left:50%;top:50%;width:140px;height:200px;margin:-100px 0 0 -70px;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d;cursor:pointer;transition:opacity .6s ease}
+.carousel-item .item-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,1,.3,1);transform-style:preserve-3d}
+.carousel-item .spin-wrap{width:100%;height:auto;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d}
+.carousel-item .spin-wrap svg,.carousel-item .spin-wrap img{width:100%;height:auto;filter:drop-shadow(0 10px 30px rgba(0,0,0,.6))}
+.carousel-label{margin-top:10px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:1px;transition:.4s;white-space:nowrap}
+.carousel-3d.has-featured .carousel-item:not(.featured){opacity:.15;pointer-events:none}
+.carousel-3d.has-featured .carousel-item:not(.featured) .item-inner{transform:scale(.3)}
+.carousel-3d.has-featured .carousel-item:not(.featured) .carousel-label{opacity:0}
+.carousel-item.featured{cursor:default;z-index:50}
+.carousel-item.featured .item-inner{transform:translate(58px,8px) scale(1.75);animation:featuredFloatFix 3.5s ease-in-out infinite}
+@keyframes featuredFloatFix{0%,100%{transform:translate(58px,8px) scale(1.75)}50%{transform:translate(58px,-6px) scale(1.75)}}
+.carousel-item.featured .spin-wrap{animation:spinBottle 14s linear infinite;filter:drop-shadow(0 0 50px rgba(201,165,92,.9)) drop-shadow(0 0 100px rgba(201,165,92,.5))}
+.carousel-item.featured .carousel-label{opacity:0}
+@keyframes spinBottle{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+.carousel-hint{text-align:center;margin-top:30px;font-size:12px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;transition:.4s;padding:0 20px}
+.carousel-hint.hidden{opacity:0;transform:translateY(10px)}
+.featured-name{position:absolute;left:50%;top:6px;transform:translate(-50%,-15px);background:linear-gradient(160deg,rgba(20,15,10,.95),rgba(10,8,5,.95));border:1px solid rgba(201,165,92,.65);border-radius:14px;padding:8px 16px;backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.6);opacity:0;transition:opacity .6s ease,transform .6s cubic-bezier(.2,1,.3,1);z-index:60;text-align:center;pointer-events:none}
+.featured-name.show{opacity:1;transform:translate(-50%,0)}
+.featured-name .fname-cat{font-size:8px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:3px}
+.featured-name .fname-text{color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;letter-spacing:1px}
+.featured-notes{position:absolute;left:4px;top:50%;transform:translateY(-50%) translateX(-30px);width:115px;opacity:0;transition:opacity .6s ease,transform .7s cubic-bezier(.2,1,.3,1);z-index:60;pointer-events:none;display:flex;flex-direction:column;gap:6px}
+.featured-notes.show{opacity:1;transform:translateY(-50%) translateX(0)}
+.fn-card{background:linear-gradient(160deg,rgba(20,15,10,.95),rgba(10,8,5,.95));border:1px solid rgba(201,165,92,.65);border-radius:11px;padding:8px 11px;backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,.55);transition:transform .5s ease,opacity .5s ease;transform:translateX(-20px);opacity:0}
+.fn-card.show{transform:translateX(0);opacity:1}
+.fn-card .fn-label{font-size:7.5px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;font-weight:700;display:flex;align-items:center;gap:4px}
+.fn-card .fn-label::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.fn-card .fn-notes{font-size:10px;color:var(--cream);line-height:1.4;font-weight:500}
+.fn-card .fn-notes span{display:block;opacity:.9}
+.featured-price{position:absolute;left:4px;bottom:15px;background:linear-gradient(160deg,rgba(201,165,92,.32),rgba(140,90,90,.22));border:1px solid rgba(201,165,92,.7);border-radius:14px;padding:8px 10px 8px 13px;backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.6);opacity:0;transform:translateY(15px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,1,.3,1);z-index:60;display:flex;align-items:center;gap:10px}
+.featured-price.show{opacity:1;transform:translateY(0)}
+.featured-price .price-info{display:flex;flex-direction:column}
+.featured-price .price-label{font-size:7.5px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:2px}
+.featured-price .price-value{color:var(--gold2);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:800;line-height:1;display:flex;align-items:baseline;gap:2px}
+.featured-price .price-value small{font-size:9px;color:var(--gray);font-family:'Tajawal',sans-serif;font-weight:600}
+.order-now-btn{padding:7px 12px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--noir);font-weight:700;font-size:11px;white-space:nowrap;box-shadow:0 4px 14px rgba(201,165,92,.45);transition:.25s;animation:orderPulse 2.5s ease-in-out infinite}
+.order-now-btn:active{transform:scale(.93)}
+@keyframes orderPulse{0%,100%{box-shadow:0 4px 14px rgba(201,165,92,.45)}50%{box-shadow:0 4px 20px rgba(201,165,92,.75),0 0 22px rgba(201,165,92,.5)}}
+.carousel-section.is-featured .sec-header{opacity:0;pointer-events:none;transition:opacity .5s ease}
+.products-sec{position:relative;z-index:2;padding:80px 24px;max-width:var(--max-w);margin:0 auto}
+.prod-head{max-width:520px;margin:0 auto 40px;text-align:center}
+.prod-head .sec-eyebrow{justify-content:center}
+.prod-head .sec-eyebrow::before{display:none}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:520px;margin:0 auto}
+.prod-card{background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(201,165,92,.15);border-radius:18px;overflow:hidden;position:relative;transition:.4s}
+.prod-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.prod-card:active{transform:scale(.97)}
+.prod-card .img-box{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,rgba(201,165,92,.15),transparent 70%);overflow:hidden}
+.prod-card .img-box svg,.prod-card .img-box img{width:70%;height:auto;transition:.5s;object-fit:contain;max-height:90%}
+.prod-card:hover .img-box svg,.prod-card:hover .img-box img{transform:scale(1.06)}
+.prod-card .badge{position:absolute;top:10px;right:10px;background:var(--gold);color:var(--noir);font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;z-index:2}
+.prod-card .body{padding:12px 12px 14px}
+.prod-card .name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-card .size{font-size:10px;color:var(--gray);margin-bottom:8px}
+.prod-card .price-row{display:flex;justify-content:space-between;align-items:center}
+.prod-card .price{color:var(--gold);font-weight:700;font-size:14px}
+.prod-card .price small{font-size:9px;color:var(--gray)}
+.prod-card .btn-add{width:32px;height:32px;border-radius:10px;background:var(--gold);color:var(--noir);display:flex;align-items:center;justify-content:center;transition:.2s}
+.prod-card .btn-add:hover{background:var(--gold2);transform:scale(1.05)}
+.prod-card .btn-add svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.5;fill:none}
+.faq-sec{position:relative;z-index:2;padding:80px 24px;max-width:700px;margin:0 auto}
+.faq-item{background:linear-gradient(160deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(201,165,92,.15);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:.3s}
+.faq-item.open{border-color:rgba(201,165,92,.5);background:rgba(201,165,92,.05)}
+.faq-q{width:100%;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;text-align:right;color:var(--cream);gap:12px}
+.faq-q .ico{width:24px;height:24px;border-radius:50%;background:rgba(201,165,92,.15);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:16px;transition:.3s;flex-shrink:0}
+.faq-item.open .faq-q .ico{transform:rotate(45deg);background:var(--gold);color:var(--noir)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 20px}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:18px}
+.faq-a p{font-size:13px;color:#a8a09a;line-height:1.7}
+.newsletter{position:relative;z-index:2;margin:40px 24px 100px;padding:50px 30px;background:linear-gradient(160deg,rgba(201,165,92,.12),rgba(140,90,90,.08));border:1px solid rgba(201,165,92,.25);border-radius:24px;text-align:center;overflow:hidden;max-width:700px;margin-left:auto;margin-right:auto}
+.newsletter::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(201,165,92,.15),transparent 40%);animation:rotate 30s linear infinite}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.newsletter *{position:relative;z-index:2}
+.newsletter h3{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:8px}
+.newsletter p{font-size:13px;color:#a8a09a;margin-bottom:20px}
+.newsletter form{display:flex;gap:8px;max-width:400px;margin:0 auto}
+.newsletter input{flex:1;padding:14px 18px;background:rgba(0,0,0,.4);border:1px solid rgba(201,165,92,.3);border-radius:12px;color:var(--cream);font-size:14px;font-family:inherit;outline:none;min-width:0;transition:.2s}
+.newsletter input:focus{border-color:var(--gold)}
+.newsletter input::placeholder{color:#5a544e}
+.newsletter button{padding:14px 24px;border-radius:12px;background:var(--gold);color:var(--noir);font-weight:700;font-size:13px;flex-shrink:0;transition:.2s}
+.newsletter button:hover{background:var(--gold2)}
+.foot{position:relative;z-index:2;padding:60px 24px 100px;text-align:center;border-top:1px solid rgba(201,165,92,.1)}
+.foot-inner{max-width:var(--max-w);margin:0 auto}
+.foot .brand-line{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:6px;color:var(--gold);margin-bottom:16px}
+.foot .info{font-size:13px;color:var(--gray);line-height:2}
+.foot .social{display:flex;justify-content:center;gap:14px;margin:24px 0}
+.foot .social a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(201,165,92,.3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:15px;transition:.3s}
+.foot .social a:hover{background:var(--gold);color:var(--noir);transform:translateY(-3px)}
+.foot .copy{font-size:11px;color:#4a4440;letter-spacing:2px;margin-top:24px}
+.cart-fab{position:fixed;bottom:24px;left:24px;z-index:80;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--noir);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(201,165,92,.5);transition:.3s}
+.cart-fab:hover{transform:scale(1.08)}
+.cart-fab:active{transform:scale(.9)}
+.cart-fab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}
+.cart-count-badge{position:absolute;top:-4px;right:-4px;background:var(--noir);color:var(--gold);font-size:10px;font-weight:700;min-width:20px;height:20px;padding:0 5px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:2px solid var(--gold);display:none}
+.cart-count-badge.show{display:flex}
+.cart-sheet{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+.cart-sheet.show{display:flex;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.cart-inner{width:100%;max-width:600px;max-height:80vh;background:linear-gradient(180deg,#0d0d0d,#050505);border-top:1px solid rgba(201,165,92,.3);border-radius:24px 24px 0 0;padding:22px;overflow-y:auto;animation:slideUp .4s cubic-bezier(.2,1,.3,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.cart-inner h3{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.cart-close{width:34px;height:34px;border-radius:50%;background:rgba(201,165,92,.15);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px}
+.cart-item{display:flex;gap:12px;padding:12px;background:rgba(255,255,255,.03);border:1px solid rgba(201,165,92,.12);border-radius:14px;margin-bottom:8px;align-items:center}
+.cart-item .thumb{width:52px;height:52px;border-radius:10px;background:radial-gradient(circle,rgba(201,165,92,.2),transparent);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.cart-item .thumb svg,.cart-item .thumb img{width:80%;height:80%;object-fit:contain}
+.cart-item .info{flex:1;min-width:0}
+.cart-item .info h4{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-item .info .p{color:var(--gold);font-size:12px;font-weight:600}
+.cart-item .qty{display:flex;align-items:center;gap:8px;margin-top:4px}
+.cart-item .qty button{width:24px;height:24px;border-radius:6px;background:rgba(201,165,92,.15);color:var(--gold);font-size:14px;font-weight:700}
+.cart-item .qty span{font-size:12px;font-weight:700}
+.cart-item .del{width:30px;height:30px;border-radius:8px;background:rgba(200,60,60,.15);color:#e07a7a;display:flex;align-items:center;justify-content:center}
+.cart-item .del svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.cart-empty{text-align:center;padding:40px 20px;color:var(--gray);font-size:13px}
+.cart-total{display:flex;justify-content:space-between;padding:16px 0;margin-top:12px;border-top:1px solid rgba(201,165,92,.2);font-size:16px;font-weight:700}
+.cart-total span:last-child{color:var(--gold)}
+.checkout-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--noir);font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;margin-top:8px}
+.order-modal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center}
+.order-modal.show{display:flex;animation:fadeIn .3s}
+.order-sheet{width:100%;max-width:520px;max-height:92vh;overflow-y:auto;background:linear-gradient(180deg,#0d0d0d,#050505);border-top:1px solid rgba(201,165,92,.4);border-radius:26px 26px 0 0;padding:24px 22px 30px;animation:slideUp .45s cubic-bezier(.2,1,.3,1);position:relative}
+.order-sheet::before{content:"";position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,165,92,.25),transparent 70%);filter:blur(30px);pointer-events:none}
+.ord-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;position:relative;z-index:2;gap:12px}
+.ord-title-wrap{flex:1}
+.ord-eyebrow{font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.ord-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;line-height:1.1}
+.ord-sub{font-size:12px;color:#a8a09a;margin-top:4px}
+.ord-close{width:36px;height:36px;border-radius:50%;background:rgba(201,165,92,.15);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid rgba(201,165,92,.3)}
+.ord-product{display:flex;gap:14px;align-items:center;background:linear-gradient(160deg,rgba(201,165,92,.12),rgba(140,90,90,.06));border:1px solid rgba(201,165,92,.3);border-radius:16px;padding:12px;margin-bottom:20px;position:relative;z-index:2}
+.ord-product .ord-thumb{width:60px;height:60px;border-radius:12px;flex-shrink:0;background:radial-gradient(circle,rgba(201,165,92,.25),transparent);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ord-product .ord-thumb svg,.ord-product .ord-thumb img{width:85%;height:85%;object-fit:contain}
+.ord-product .ord-info{flex:1;min-width:0}
+.ord-product .ord-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;line-height:1.1;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ord-product .ord-meta{font-size:11px;color:#a8a09a}
+.ord-product .ord-price{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:800;color:var(--gold2);flex-shrink:0;display:flex;align-items:baseline;gap:2px}
+.ord-product .ord-price small{font-size:10px;color:var(--gray);font-family:'Tajawal',sans-serif}
+.ord-field{margin-bottom:13px;position:relative;z-index:2}
+.ord-field label{display:block;font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px;letter-spacing:.5px}
+.ord-field label::after{content:" *";color:var(--rose)}
+.ord-field input,.ord-field select{width:100%;padding:14px 16px;background:rgba(0,0,0,.5);border:1.5px solid rgba(201,165,92,.25);border-radius:12px;color:var(--cream);font-size:15px;font-family:inherit;outline:none;transition:.25s}
+.ord-field input:focus,.ord-field select:focus{border-color:var(--gold);background:rgba(0,0,0,.7);box-shadow:0 0 0 3px rgba(201,165,92,.15)}
+.ord-field input::placeholder{color:#5a544e}
+.ord-field select{cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a55c' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:left 14px center;background-size:16px;padding-left:40px}
+.ord-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:2}
+.ord-submit{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--noir);font-weight:800;font-size:15px;letter-spacing:1px;box-shadow:0 10px 30px rgba(201,165,92,.4);margin-top:14px;transition:.25s;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:8px}
+.ord-submit:hover{transform:translateY(-2px)}
+.ord-submit:active{transform:scale(.97)}
+.ord-submit:disabled{opacity:.6;transform:none}
+.ord-submit svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5}
+.ord-note{text-align:center;font-size:11px;color:#5a544e;margin-top:14px;position:relative;z-index:2;line-height:1.6}
+.toast{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background:rgba(5,5,5,.95);color:var(--gold);padding:13px 24px;border-radius:30px;font-size:13px;font-weight:600;border:1px solid rgba(201,165,92,.3);box-shadow:0 12px 40px rgba(0,0,0,.5);transition:bottom .4s cubic-bezier(.5,1.7,.5,1),opacity .3s ease;z-index:500;white-space:nowrap;opacity:0;pointer-events:none;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{bottom:100px;opacity:1;pointer-events:auto}
+@media (min-width:1400px){.top-nav{display:flex}.bottle-stage{max-width:420px;height:520px}.carousel-stage{height:600px}.products-grid{grid-template-columns:repeat(3,1fr);max-width:900px;gap:20px}}
+@media (min-width:1024px){.top-nav{display:flex}.products-grid{grid-template-columns:repeat(3,1fr);max-width:800px;gap:18px}.sec{padding:120px 40px}}
+@media (min-width:1920px){:root{--max-w:1600px}.products-grid{grid-template-columns:repeat(4,1fr);max-width:1200px}}
+@media (max-width:640px){.topbar{padding:14px 18px}.sec{padding:80px 20px}.hero{padding:90px 20px 70px}.products-grid{grid-template-columns:repeat(2,1fr);gap:12px}.cart-fab{width:52px;height:52px;bottom:20px;left:20px}}
+@media (max-width:380px){.hero h1{font-size:38px}.bottle-stage{max-width:280px;height:360px}.carousel-stage{height:440px}.products-grid{grid-template-columns:repeat(2,1fr);gap:10px}.carousel-item.featured .item-inner{transform:translate(45px,8px) scale(1.55)}@keyframes featuredFloatFix{0%,100%{transform:translate(45px,8px) scale(1.55)}50%{transform:translate(45px,-6px) scale(1.55)}}.featured-notes{width:105px;left:2px}.fn-card .fn-notes{font-size:9.5px}.newsletter form{flex-direction:column}.newsletter button{width:100%}.ord-row{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="neon-bg">
+  <div class="blob blob-1" id="blob1"></div>
+  <div class="blob blob-2" id="blob2"></div>
+  <div class="blob blob-3" id="blob3"></div>
+</div>
+
+<div class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <div class="brand-mini">
+      <div class="brand-mark" id="brandMark">S</div>
+      <div class="brand-text" id="brandText">SENTEL<small>PARFUMS · AGADIR</small></div>
+    </div>
+    <nav class="top-nav">
+      <a onclick="scrollToSection('hero')">الرئيسية</a>
+      <a onclick="scrollToSection('notes')">النوتات</a>
+      <a onclick="scrollToSection('carousel')">التشكيلة</a>
+      <a onclick="scrollToSection('products')">المنتجات</a>
+      <a onclick="scrollToSection('faq')">الأسئلة</a>
+    </nav>
+    <button class="menu-btn" onclick="openCart()">
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="side-nav" id="sideNav">
+  <div class="side-dot active" data-target="hero"><span class="label">البداية</span></div>
+  <div class="side-dot" data-target="notes"><span class="label">النوتات</span></div>
+  <div class="side-dot" data-target="carousel"><span class="label">التشكيلة</span></div>
+  <div class="side-dot" data-target="products"><span class="label">المنتجات</span></div>
+  <div class="side-dot" data-target="faq"><span class="label">الأسئلة</span></div>
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="heroEyebrow">L'Expérience Olfactive</div>
+    <h1 id="heroTitle">عطرك<br>يروي <em>قصتك</em></h1>
+    <p id="heroDesc">تجربة عطرية فاخرة من قلب أكادير</p>
+  </div>
+  <div class="bottle-stage">
+    <div class="bottle-glow" id="heroGlow"></div>
+    <div class="bottle-3d" id="heroBottle"></div>
+  </div>
+  <div class="hero-product" id="heroProduct">
+    <div class="cat" id="heroCat">—</div>
+    <div class="name" id="heroName">—</div>
+    <div class="price" id="heroPrice">—</div>
+  </div>
+  <div class="scroll-hint"><span>SCROLL</span><div class="line"></div></div>
+</section>
+
+<section class="sec" id="notes">
+  <div class="sec-eyebrow">Pyramide Olfactive</div>
+  <h2 class="sec-title">نوتات <em>العطر</em></h2>
+  <p class="sec-desc">الطبقات العطرية للعطر المعروض — تتبدّل تلقائيًا.</p>
+  <div class="notes-wrap" id="notesWrap">
+    <svg class="notes-lines" viewBox="0 0 400 480" preserveAspectRatio="none">
+      <path d="M60 80 Q120 80 160 160"/>
+      <path d="M340 140 Q280 140 240 180"/>
+      <path d="M60 320 Q120 320 160 300"/>
+      <path d="M340 380 Q280 380 240 320"/>
+      <circle class="dot" cx="60" cy="80" r="4"/>
+      <circle class="dot" cx="340" cy="140" r="4"/>
+      <circle class="dot" cx="60" cy="320" r="4"/>
+      <circle class="dot" cx="340" cy="380" r="4"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding:20px 0">
+      <div class="note-item" data-delay="0"><div class="note-card" id="noteCardTop"><h4>TOP NOTES</h4><p id="noteTextTop">—</p></div><div class="note-dot"></div></div>
+      <div class="note-item" data-delay="400"><div class="note-card" id="noteCardBase"><h4>BASE NOTES</h4><p id="noteTextBase">—</p></div><div class="note-dot"></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding:20px 0">
+      <div class="note-item right" data-delay="200"><div class="note-dot"></div><div class="note-card" id="noteCardHeart"><h4>HEART NOTES</h4><p id="noteTextHeart">—</p></div></div>
+      <div class="note-item right" data-delay="600"><div class="note-dot"></div><div class="note-card" id="noteCardSig"><h4>SIGNATURE</h4><p id="noteTextSig">—</p></div></div>
+    </div>
+    <div class="notes-center"><div class="mini-bottle" id="miniBottle"></div></div>
+  </div>
+</section>
+
+<section class="carousel-section" id="carousel">
+  <div class="sec sec-header" style="padding-bottom:20px;text-align:center">
+    <div class="sec-eyebrow" style="justify-content:center">Collection</div>
+    <h2 class="sec-title">تشكيلة <em>Sentel</em></h2>
+    <p class="sec-desc" style="margin:14px auto 0;text-align:center">اضغط على أي زجاجة لعرض تفاصيلها</p>
+  </div>
+  <div class="carousel-stage" id="carouselStage">
+    <div class="featured-name" id="featuredName">
+      <div class="fname-cat" id="fnameCat">—</div>
+      <div class="fname-text" id="fnameText">—</div>
+    </div>
+    <div class="featured-notes" id="featuredNotes">
+      <div class="fn-card" id="fnCardTop"><div class="fn-label">TOP</div><div class="fn-notes" id="fnTop"></div></div>
+      <div class="fn-card" id="fnCardHeart"><div class="fn-label">HEART</div><div class="fn-notes" id="fnHeart"></div></div>
+      <div class="fn-card" id="fnCardBase"><div class="fn-label">BASE</div><div class="fn-notes" id="fnBase"></div></div>
+    </div>
+    <div class="featured-price" id="featuredPrice">
+      <div class="price-info">
+        <div class="price-label">PRIX</div>
+        <div class="price-value"><span id="fPriceValue">—</span><small>د.م</small></div>
+      </div>
+      <button class="order-now-btn" onclick="openOrder()">اطلب الآن</button>
+    </div>
+    <div class="carousel-3d" id="carousel3d"></div>
+  </div>
+  <p class="carousel-hint" id="carouselHint">← اضغط على زجاجة →</p>
+</section>
+
+<section class="products-sec" id="products">
+  <div class="prod-head">
+    <div class="sec-eyebrow">Nos Parfums</div>
+    <h2 class="sec-title">الأكثر <em>مبيعًا</em></h2>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<section class="faq-sec" id="faq">
+  <div class="sec-eyebrow">FAQ</div>
+  <h2 class="sec-title" style="margin-bottom:24px">أسئلة <em>شائعة</em></h2>
+  <div id="faqList"></div>
+</section>
+
+<div class="newsletter">
+  <h3>انضم إلى القائمة</h3>
+  <p>كن أول من يعرف عن العطور الجديدة والعروض الحصرية</p>
+  <form onsubmit="event.preventDefault();toast('✓ تم اشتراكك');this.reset();">
+    <input type="email" placeholder="بريدك الإلكتروني" required>
+    <button type="submit">اشترك</button>
+  </form>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="brand-line" id="footBrandLine">SENTEL PARFUMS</div>
+    <div class="info" id="footInfo"></div>
+    <div class="social" id="footSocial"></div>
+    <div class="copy" id="footCopy">© 2026</div>
+  </div>
+</footer>
+
+<button class="cart-fab" onclick="openCart()">
+  <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+  <span class="cart-count-badge" id="cartBadge">0</span>
+</button>
+
+<div class="cart-sheet" id="cartSheet" onclick="if(event.target===this)closeCart()">
+  <div class="cart-inner">
+    <h3>سلة التسوق <button class="cart-close" onclick="closeCart()">✕</button></h3>
+    <div id="cartContent"></div>
+    <div id="cartFooter" style="display:none">
+      <div class="cart-total"><span>الإجمالي</span><span id="cartTotal">0 د.م</span></div>
+      <button class="checkout-btn" onclick="checkout()">إتمام الطلب</button>
+    </div>
+  </div>
+</div>
+
+<div class="order-modal" id="orderModal" onclick="if(event.target===this)closeOrder()">
+  <div class="order-sheet">
+    <div class="ord-head">
+      <div class="ord-title-wrap">
+        <div class="ord-eyebrow">Commande Rapide</div>
+        <div class="ord-title">إتمام الطلب</div>
+        <div class="ord-sub">أدخل بياناتك وسنتصل بك للتأكيد</div>
+      </div>
+      <button class="ord-close" onclick="closeOrder()">✕</button>
+    </div>
+    <div class="ord-product" id="ordProduct"></div>
+    <form id="orderForm">
+      <div class="ord-field"><label>الاسم الكامل</label><input name="name" required placeholder="مثال: محمد العلوي"></div>
+      <div class="ord-row">
+        <div class="ord-field"><label>الهاتف</label><input name="phone" type="tel" required placeholder="06XXXXXXXX"></div>
+        <div class="ord-field">
+          <label>المدينة</label>
+          <select name="city" required>
+            <option value="">اختر</option>
+            <option>أكادير</option><option>الدار البيضاء</option>
+            <option>الرباط</option><option>مراكش</option>
+            <option>فاس</option><option>طنجة</option><option>أخرى</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="ord-submit" id="ordSubmit">
+        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        تأكيد الطلب
+      </button>
+      <p class="ord-note">🔒 بياناتك محمية · سنتصل بك خلال 24 ساعة للتأكيد</p>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CFG = window.CONFIG;
+const PRODUCTS = CFG.products;
+const FAQ = CFG.faq;
+const STORE = CFG.contact;
+const SHIPPING = CFG.shipping;
+const THEME = CFG.theme;
+const SECTIONS = CFG.sections;
+(function applyTheme(){
+  const r = document.documentElement;
+  const c = THEME.colors;
+  r.style.setProperty('--gold', c.primary);
+  r.style.setProperty('--gold2', c.primaryLight);
+  r.style.setProperty('--noir', c.dark);
+  r.style.setProperty('--rose', c.accent);
+  r.style.setProperty('--cream', c.background);
+  r.style.setProperty('--gray', c.text);
+  r.style.setProperty('--radius', THEME.radius + 'px');
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', c.dark);
+  const secMap = {hero:'#hero', notes:'#notes', carousel:'#carousel', products:'#products', faq:'#faq', newsletter:'.newsletter', footer:'.foot'};
+  Object.entries(secMap).forEach(([k, sel]) => {
+    if(SECTIONS[k] === false){
+      const el = document.querySelector(sel);
+      if(el) el.style.display = 'none';
+    }
+  });
+  document.title = CFG.store.name + ' ' + CFG.store.subtitle;
+})();
+(function applyContent(){
+  const bm = document.getElementById('brandMark');
+  if(bm) bm.textContent = CFG.store.logoLetter;
+  const bt = document.getElementById('brandText');
+  if(bt) bt.innerHTML = CFG.store.name + '<small>' + CFG.store.subtitle + '</small>';
+  const he = document.getElementById('heroEyebrow');
+  if(he) he.textContent = CFG.hero.eyebrow;
+  const ht = document.getElementById('heroTitle');
+  if(ht) ht.innerHTML = CFG.hero.titleLine1 + '<br>' + CFG.hero.titleLine2 + ' <em>' + CFG.hero.titleAccent + '</em>';
+  const hd = document.getElementById('heroDesc');
+  if(hd) hd.textContent = CFG.store.description;
+  const fl = document.getElementById('footBrandLine');
+  if(fl) fl.textContent = CFG.store.name + ' ' + CFG.store.subtitle.split('·')[0].trim();
+  const fi = document.getElementById('footInfo');
+  if(fi) fi.innerHTML = '📍 ' + STORE.address + '<br>⏰ ' + STORE.hoursWeek + ' · ' + STORE.hoursSunday + '<br>📞 ' + STORE.phone + ' · ✉️ ' + STORE.email;
+  const fs = document.getElementById('footSocial');
+  if(fs){
+    let html = '';
+    if(STORE.instagram && STORE.instagram !== '#') html += '<a href="' + STORE.instagram + '" target="_blank">📷</a>';
+    if(STORE.facebook && STORE.facebook !== '#') html += '<a href="' + STORE.facebook + '" target="_blank">📘</a>';
+    if(STORE.whatsapp) html += '<a href="https://wa.me/' + STORE.whatsapp + '" target="_blank">💬</a>';
+    if(STORE.tiktok && STORE.tiktok !== '#') html += '<a href="' + STORE.tiktok + '" target="_blank">🎵</a>';
+    fs.innerHTML = html || '<a href="#">📷</a><a href="#">📘</a><a href="#">💬</a><a href="#">📱</a>';
+  }
+  const fc = document.getElementById('footCopy');
+  if(fc) fc.textContent = '© ' + new Date().getFullYear() + ' ' + CFG.store.name;
+})();
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+function fmt(n){return Number(n).toLocaleString('fr-MA')}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+function hexToRgba(hex, a){const h=hex.replace('#','');return 'rgba('+parseInt(h.substring(0,2),16)+','+parseInt(h.substring(2,4),16)+','+parseInt(h.substring(4,6),16)+','+a+')';}
+function bottleHTML(p, big){
+  if(p.img){
+    const u = p.img + '?t=' + Date.now();
+    return '<img src="' + u + '" alt="' + p.name + '" loading="lazy">';
+  }
+  const uid = 'b' + p.id + Math.random().toString(36).slice(2,5);
+  const c1 = p.color[0], c2 = p.color[1];
+  return '<svg viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g' + uid + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient><linearGradient id="cap' + uid + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0dca8"/><stop offset=".5" stop-color="#c9a55c"/><stop offset="1" stop-color="#8a6a3a"/></linearGradient><radialGradient id="sh' + uid + '" cx=".3" cy=".3" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><ellipse cx="120" cy="325" rx="70" ry="8" fill="#000" opacity=".4"/><path d="M55 105 Q55 90 70 88 L170 88 Q185 90 185 105 L185 275 Q185 295 165 295 L75 295 Q55 295 55 275 Z" fill="url(#g' + uid + ')"/><ellipse cx="85" cy="180" rx="12" ry="60" fill="url(#sh' + uid + ')" opacity=".5"/><rect x="105" y="60" width="30" height="32" rx="4" fill="url(#cap' + uid + ')"/><rect x="95" y="30" width="50" height="35" rx="7" fill="url(#cap' + uid + ')"/><rect x="100" y="22" width="40" height="14" rx="4" fill="url(#cap' + uid + ')"/><rect x="70" y="180" width="100" height="70" rx="8" fill="#0a0a0a" opacity=".85"/><rect x="70" y="180" width="100" height="70" rx="8" fill="none" stroke="#c9a55c" stroke-width=".8"/><text x="120" y="208" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="700" fill="#e8d4a2" letter-spacing="2">' + CFG.store.name + '</text><text x="120" y="232" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="7" fill="#c9a55c" letter-spacing="3">PARFUMS</text></svg>';
+}
+const HERO_IDS = PRODUCTS.slice(0, 8).map(p => p.id);
+let heroIndex = 0, heroTimer, heroChanging = false;
+const heroSpeed = (THEME.animation.heroRotation || 20) * 1000;
+function setHeroProduct(p, first){
+  const b = $('#heroBottle'), pr = $('#heroProduct'), gl = $('#heroGlow');
+  if(!b) return;
+  if(first){
+    b.innerHTML = bottleHTML(p, true);
+    $('#heroCat').textContent = p.cat;
+    $('#heroName').textContent = p.name;
+    $('#heroPrice').textContent = fmt(p.price) + ' د.م';
+    return;
+  }
+  b.classList.add('fading'); pr.classList.add('fading');
+  setTimeout(() => {
+    b.innerHTML = bottleHTML(p, true);
+    $('#heroCat').textContent = p.cat;
+    $('#heroName').textContent = p.name;
+    $('#heroPrice').textContent = fmt(p.price) + ' د.م';
+    gl.style.background = 'radial-gradient(circle at 50% 50%, ' + hexToRgba(p.color[0], .4) + ' 0%, transparent 55%)';
+    b.classList.remove('fading'); pr.classList.remove('fading');
+  }, 600);
+}
+function nextHero(){
+  if(heroChanging) return;
+  heroChanging = true;
+  heroIndex = (heroIndex + 1) % HERO_IDS.length;
+  const p = PRODUCTS.find(x => x.id === HERO_IDS[heroIndex]);
+  if(!p){ heroChanging = false; return; }
+  setHeroProduct(p, false);
+  setTimeout(() => updateNotesSection(p), 300);
+  setTimeout(() => { heroChanging = false; }, 900);
+}
+function startHeroRotation(){
+  clearInterval(heroTimer);
+  heroTimer = setInterval(nextHero, heroSpeed);
+}
+function updateNotesSection(p){
+  if(!p || !p.notes) return;
+  const cards = {
+    top: {text: $('#noteTextTop'), card: $('#noteCardTop'), data: p.notes.top},
+    heart: {text: $('#noteTextHeart'), card: $('#noteCardHeart'), data: p.notes.heart},
+    base: {text: $('#noteTextBase'), card: $('#noteCardBase'), data: p.notes.base}
+  };
+  Object.values(cards).forEach(c => c.text.classList.add('fading'));
+  const mini = $('#miniBottle'); mini.classList.add('fading');
+  setTimeout(() => {
+    Object.entries(cards).forEach(([k, c]) => {
+      c.text.textContent = c.data.join(' · ');
+      c.text.classList.remove('fading');
+      c.card.classList.add('updating');
+      setTimeout(() => c.card.classList.remove('updating'), 1200);
+    });
+    const sig = $('#noteTextSig');
+    sig.classList.add('fading');
+    setTimeout(() => {
+      sig.textContent = p.name;
+      sig.classList.remove('fading');
+    }, 100);
+    mini.innerHTML = bottleHTML(p, false);
+    mini.classList.remove('fading');
+  }, 450);
+}
+function renderProducts(){
+  const g = $('#productsGrid');
+  if(!g) return;
+  g.innerHTML = PRODUCTS.map(p => '<div class="prod-card">' + (p.badge ? '<div class="badge">' + p.badge + '</div>' : '') + '<div class="img-box">' + bottleHTML(p, false) + '</div><div class="body"><div class="name">' + p.name + '</div><div class="size">' + p.size + ' · ' + p.cat + '</div><div class="price-row"><div class="price">' + fmt(p.price) + '<small> د.م</small></div><button class="btn-add" onclick="addToCart(' + p.id + ')"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div></div></div>').join('');
+}
+const CAROUSEL_ITEMS = PRODUCTS.slice(0, 8);
+let RADIUS = 180;
+let carouselAngle = 0;
+const carouselSpeed = THEME.animation.carouselSpeed || 0.15;
+let carouselRunning = true, carouselRAF, featuredId = null;
+function adjustRadius(){
+  const w = window.innerWidth;
+  if(w < 380) RADIUS = 130;
+  else if(w < 640) RADIUS = 150;
+  else if(w < 1024) RADIUS = 180;
+  else RADIUS = 220;
+}
+function renderCarousel(){
+  const c = $('#carousel3d');
+  if(!c) return;
+  adjustRadius();
+  const n = CAROUSEL_ITEMS.length;
+  c.innerHTML = CAROUSEL_ITEMS.map((p, i) => {
+    const angle = (360/n)*i;
+    return '<div class="carousel-item" data-id="' + p.id + '" style="transform:rotateY(' + angle + 'deg) translateZ(' + RADIUS + 'px)" onclick="featureItem(' + p.id + ')"><div class="item-inner"><div class="spin-wrap">' + bottleHTML(p, false) + '</div><div class="carousel-label">' + p.name + '</div></div></div>';
+  }).join('');
+  startCarousel();
+}
+function startCarousel(){
+  carouselRunning = true;
+  const tick = () => {
+    if(!carouselRunning) return;
+    if(!featuredId){
+      carouselAngle = (carouselAngle + carouselSpeed) % 360;
+      const c = $('#carousel3d');
+      if(c) c.style.transform = 'translate(-50%,-50%) rotateY(' + carouselAngle + 'deg)';
+    }
+    carouselRAF = requestAnimationFrame(tick);
+  };
+  cancelAnimationFrame(carouselRAF);
+  tick();
+}
+function featureItem(id){
+  if(featuredId === id){ closeFeatured(); return; }
+  const c = $('#carousel3d');
+  const items = [...c.querySelectorAll('.carousel-item')];
+  const item = items.find(x => +x.dataset.id === id);
+  if(!item) return;
+  if(featuredId){
+    c.classList.remove('has-featured');
+    items.forEach(x => x.classList.remove('featured'));
+    hideFeaturedOverlays(); resetBackground();
+    document.querySelector('.carousel-section').classList.remove('is-featured');
+  }
+  carouselRunning = false;
+  cancelAnimationFrame(carouselRAF);
+  const idx = items.indexOf(item), total = items.length;
+  const anglePerItem = 360/total;
+  const targetMod = ((-anglePerItem * idx) % 360 + 360) % 360;
+  const currentMod = ((carouselAngle % 360) + 360) % 360;
+  let diff = targetMod - currentMod;
+  if(diff > 180) diff -= 360;
+  if(diff < -180) diff += 360;
+  const target = carouselAngle + diff;
+  c.style.transition = 'transform 1s cubic-bezier(.4,0,.2,1)';
+  c.style.transform = 'translate(-50%,-50%) rotateY(' + target + 'deg)';
+  carouselAngle = target % 360;
+  setTimeout(() => {
+    c.style.transition = 'none';
+    c.classList.add('has-featured');
+    item.classList.add('featured');
+    $('#carouselHint').classList.add('hidden');
+    $('#sideNav').classList.add('hidden');
+    document.querySelector('.carousel-section').classList.add('is-featured');
+    const p = PRODUCTS.find(x => x.id === id);
+    if(p){ changeBackground(p); showFeaturedOverlays(p); }
+  }, 1000);
+  featuredId = id;
+}
+function showFeaturedOverlays(p){
+  $('#fnameCat').textContent = p.cat;
+  $('#fnameText').textContent = p.name;
+  setTimeout(() => $('#featuredName').classList.add('show'), 100);
+  const h = arr => arr.map(n => '<span>' + n + '</span>').join('');
+  $('#fnTop').innerHTML = h(p.notes.top);
+  $('#fnHeart').innerHTML = h(p.notes.heart);
+  $('#fnBase').innerHTML = h(p.notes.base);
+  setTimeout(() => {
+    $('#featuredNotes').classList.add('show');
+    setTimeout(() => $('#fnCardTop').classList.add('show'), 100);
+    setTimeout(() => $('#fnCardHeart').classList.add('show'), 300);
+    setTimeout(() => $('#fnCardBase').classList.add('show'), 500);
+  }, 200);
+  $('#fPriceValue').textContent = fmt(p.price);
+  setTimeout(() => $('#featuredPrice').classList.add('show'), 700);
+}
+function hideFeaturedOverlays(){
+  ['featuredName','featuredNotes','featuredPrice','fnCardTop','fnCardHeart','fnCardBase'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('show');
+  });
+}
+function changeBackground(p){
+  const c1 = p.color[0], c2 = p.color[1];
+  $('#blob1').style.background = 'radial-gradient(circle, ' + c1 + ', transparent 70%)';
+  $('#blob1').style.opacity = '.75';
+  $('#blob2').style.background = 'radial-gradient(circle, ' + c2 + ', transparent 70%)';
+  $('#blob2').style.opacity = '.65';
+  $('#blob3').style.background = 'radial-gradient(circle, ' + c1 + ', transparent 70%)';
+  $('#blob3').style.opacity = '.5';
+  document.querySelector('.carousel-section').style.background = 'radial-gradient(circle at 50% 50%, ' + hexToRgba(c1, .18) + ' 0%, transparent 70%)';
+}
+function resetBackground(){
+  $('#blob1').style.background = 'radial-gradient(circle,' + THEME.colors.primary + ',transparent 70%)';
+  $('#blob1').style.opacity = '.5';
+  $('#blob2').style.background = 'radial-gradient(circle,' + THEME.colors.accent + ',transparent 70%)';
+  $('#blob2').style.opacity = '.5';
+  $('#blob3').style.background = 'radial-gradient(circle,#e0a850,transparent 70%)';
+  $('#blob3').style.opacity = '.3';
+  document.querySelector('.carousel-section').style.background = 'transparent';
+}
+function closeFeatured(){
+  if(!featuredId) return;
+  const c = $('#carousel3d');
+  const items = [...c.querySelectorAll('.carousel-item')];
+  hideFeaturedOverlays(); resetBackground();
+  document.querySelector('.carousel-section').classList.remove('is-featured');
+  setTimeout(() => {
+    items.forEach(x => x.classList.remove('featured'));
+    c.classList.remove('has-featured');
+    $('#carouselHint').classList.remove('hidden');
+    $('#sideNav').classList.remove('hidden');
+    featuredId = null;
+    setTimeout(() => { carouselRunning = true; startCarousel(); }, 300);
+  }, 300);
+}
+function openOrder(){
+  if(!featuredId){ toast('❌ اختر عطرًا أولًا'); return; }
+  const p = PRODUCTS.find(x => x.id === featuredId);
+  if(!p) return;
+  $('#ordProduct').innerHTML = '<div class="ord-thumb">' + bottleHTML(p, false) + '</div><div class="ord-info"><div class="ord-name">' + p.name + '</div><div class="ord-meta">' + p.size + ' · ' + p.cat + '</div></div><div class="ord-price">' + fmt(p.price) + '<small>د.م</small></div>';
+  $('#orderForm').dataset.productId = p.id;
+  $('#orderModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeOrder(){
+  $('#orderModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  $('#orderForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.target;
+    const pid = +form.dataset.productId;
+    const p = PRODUCTS.find(x => x.id === pid);
+    if(!p) return;
+    const data = Object.fromEntries(new FormData(form));
+    const orderNum = 'SP-' + Date.now().toString().slice(-6);
+    const btn = $('#ordSubmit');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ جاري الإرسال...';
+    const orders = JSON.parse(localStorage.getItem('sentel_orders') || '[]');
+    orders.push({orderNum, name: data.name, phone: data.phone, city: data.city, product: p.name, total: p.price, date: new Date().toLocaleDateString('ar-MA'), status: 'new'});
+    localStorage.setItem('sentel_orders', JSON.stringify(orders));
+    if(STORE.googleSheetsUrl){
+      fetch(STORE.googleSheetsUrl, {method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify({orderNum, name: data.name, phone: data.phone, city: data.city, product: p.name, price: p.price})}).catch(() => {});
+    }
+    const msg = '🌟 *طلب جديد* 🌟%0A━━━━━━━━━━━━━━━%0A📋 رقم الطلب: ' + orderNum + '%0A🛍️ *المنتج:* ' + p.name + '%0A📏 *الحجم:* ' + p.size + '%0A💰 *السعر:* ' + p.price + ' د.م%0A━━━━━━━━━━━━━━━%0A👤 *الاسم:* ' + data.name + '%0A📞 *الهاتف:* ' + data.phone + '%0A📍 *المدينة:* ' + data.city;
+    if(STORE.whatsapp){
+      window.open('https://wa.me/' + STORE.whatsapp + '?text=' + msg, '_blank');
+    }
+    toast('✓ تم استلام طلبك ' + orderNum);
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> تأكيد الطلب';
+    form.reset();
+    setTimeout(closeOrder, 500);
+  });
+});
+function renderFAQ(){
+  const fl = $('#faqList');
+  if(!fl) return;
+  fl.innerHTML = FAQ.map((f, i) => '<div class="faq-item" data-i="' + i + '"><button class="faq-q"><span>' + f.q + '</span><span class="ico">+</span></button><div class="faq-a"><p>' + f.a + '</p></div></div>').join('');
+  $$('.faq-q').forEach(b => {
+    b.addEventListener('click', () => {
+      const item = b.parentElement;
+      const wasOpen = item.classList.contains('open');
+      $$('.faq-item').forEach(x => x.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+}
+let cart = JSON.parse(localStorage.getItem('sentel_cart_final') || '[]');
+function saveCart(){ localStorage.setItem('sentel_cart_final', JSON.stringify(cart)); updateBadge(); }
+function updateBadge(){
+  const n = cart.reduce((s, i) => s + i.qty, 0);
+  const b = $('#cartBadge');
+  if(!b) return;
+  b.textContent = n;
+  b.classList.toggle('show', n > 0);
+}
+function addToCart(id){
+  const it = cart.find(i => i.id === id);
+  if(it) it.qty++; else cart.push({id, qty: 1});
+  saveCart(); toast('✓ أُضيف إلى السلة');
+}
+function openCart(){ $('#cartSheet').classList.add('show'); renderCart(); }
+function closeCart(){ $('#cartSheet').classList.remove('show'); }
+function renderCart(){
+  const c = $('#cartContent');
+  if(!cart.length){
+    c.innerHTML = '<div class="cart-empty">🛍️<br><br>سلتك فارغة<br><small>أضف بعض العطور الفاخرة</small></div>';
+    $('#cartFooter').style.display = 'none';
+    return;
+  }
+  let total = 0;
+  c.innerHTML = cart.map(it => {
+    const p = PRODUCTS.find(x => x.id === it.id);
+    if(!p) return '';
+    const sub = p.price * it.qty;
+    total += sub;
+    return '<div class="cart-item"><div class="thumb">' + bottleHTML(p, false) + '</div><div class="info"><h4>' + p.name + '</h4><div class="p">' + fmt(sub) + ' د.م</div><div class="qty"><button onclick="changeQty(' + it.id + ',-1)">−</button><span>' + it.qty + '</span><button onclick="changeQty(' + it.id + ',1)">+</button></div></div><button class="del" onclick="removeItem(' + it.id + ')"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M6 6l1 14a2 2 0 002 2h6a2 2 0 002-2l1-14"/></svg></button></div>';
+  }).join('');
+  $('#cartFooter').style.display = 'block';
+  $('#cartTotal').textContent = fmt(total) + ' د.م';
+}
+function changeQty(id, d){
+  const it = cart.find(i => i.id === id);
+  if(!it) return;
+  it.qty = Math.max(1, it.qty + d);
+  saveCart(); renderCart();
+}
+function removeItem(id){ cart = cart.filter(i => i.id !== id); saveCart(); renderCart(); }
+function checkout(){
+  if(!cart.length){ toast('سلتك فارغة'); return; }
+  toast('✓ تم استلام طلبك');
+  cart = []; saveCart();
+  setTimeout(() => { closeCart(); renderCart(); }, 1000);
+}
+function setupScroll(){
+  window.addEventListener('scroll', () => {
+    $('#topbar').classList.toggle('scrolled', window.scrollY > 40);
+  }, {passive: true});
+  const nw = $('#notesWrap');
+  if(nw){
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if(en.isIntersecting){
+          document.querySelector('.notes-lines').classList.add('show');
+          document.querySelector('.notes-center').classList.add('show');
+          document.querySelectorAll('.note-item').forEach(el => {
+            const delay = +el.dataset.delay || 0;
+            setTimeout(() => el.classList.add('show'), delay);
+          });
+        }
+      });
+    }, {threshold: .3});
+    io.observe(nw);
+  }
+  const secs = ['hero','notes','carousel','products','faq'];
+  const dots = $$('.side-dot');
+  const so = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        const id = en.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.dataset.target === id));
+      }
+    });
+  }, {threshold: .5});
+  secs.forEach(id => { const el = document.getElementById(id); if(el) so.observe(el); });
+  dots.forEach(d => {
+    d.addEventListener('click', () => {
+      const t = document.getElementById(d.dataset.target);
+      if(t) t.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  });
+  const stage = document.querySelector('.bottle-stage');
+  if(stage){
+    for(let i = 0; i < 12; i++){
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.bottom = '0';
+      p.style.animationDuration = (6 + Math.random() * 6) + 's';
+      p.style.animationDelay = Math.random() * 6 + 's';
+      p.style.opacity = .3 + Math.random() * .5;
+      stage.appendChild(p);
+    }
+  }
+}
+function scrollToSection(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({behavior: 'smooth', block: 'start'}); }
+window.addEventListener('resize', () => {
+  if(!featuredId){
+    adjustRadius();
+    const n = CAROUSEL_ITEMS.length;
+    $$('.carousel-item').forEach((item, i) => {
+      const angle = (360/n)*i;
+      item.style.transform = 'rotateY(' + angle + 'deg) translateZ(' + RADIUS + 'px)';
+    });
+  }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const first = PRODUCTS.find(x => x.id === HERO_IDS[0]);
+  if(first){
+    setHeroProduct(first, true);
+    updateNotesSection(first);
+    startHeroRotation();
+  }
+  renderProducts();
+  renderCarousel();
+  renderFAQ();
+  setupScroll();
+  updateBadge();
+});
+</script>
+</body>
+</html>
