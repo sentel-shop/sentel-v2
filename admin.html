@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة التحكم — SENTEL PARFUMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Cormorant+Garamond:wght@700&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--navy:#1e2a3a;--navy2:#161f2c;--navy-hover:#2a3849;--pink:#e91e63;--pink-light:#fce4ec;--bg:#f5f6f8;--card:#fff;--border:#e8ebef;--text:#1a202c;--text2:#6b7280;--gold:#c9a55c;--green:#10b981;--red:#ef4444}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:14px;outline:none}
+
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#1e2a3a,#161f2c)}
+.login-box{background:#fff;border-radius:20px;padding:32px 26px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-box .logo{width:70px;height:70px;margin:0 auto 16px;background:linear-gradient(135deg,#c9a55c,#e8d4a2);border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:#1e2a3a}
+.login-box h2{font-size:24px;margin-bottom:8px;color:#1e2a3a}
+.login-box p{color:#6b7280;font-size:14px;margin-bottom:22px;line-height:1.6}
+.login-box textarea{width:100%;height:90px;padding:14px;border:2px solid #e8ebef;border-radius:12px;font-family:monospace;font-size:13px;background:#f9fafb;resize:none;margin-bottom:14px;transition:.2s}
+.login-box textarea:focus{border-color:#e91e63;background:#fff}
+.login-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#e91e63,#f06292);color:#fff;font-weight:700;font-size:15px;box-shadow:0 8px 24px rgba(233,30,99,.35);transition:.2s}
+.login-btn:active{transform:scale(.97)}
+.login-box a{color:#e91e63;font-size:13px;text-decoration:underline;display:block;margin-top:16px}
+
+.app{display:none;min-height:100vh}
+.app.show{display:block}
+
+.sidebar{position:fixed;top:0;right:0;bottom:0;width:250px;background:linear-gradient(180deg,var(--navy),var(--navy2));color:#fff;overflow-y:auto;z-index:100;transition:transform .3s}
+.sb-header{padding:20px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#c9a55c,#e8d4a2);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#1e2a3a}
+.sb-title{font-size:15px;font-weight:700}
+.sb-title small{display:block;font-size:9px;color:#c9a55c;letter-spacing:1.5px;font-weight:400;margin-top:2px}
+.sb-menu{padding:14px 10px}
+.sb-section{padding:14px 18px 6px;font-size:10.5px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.sb-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;font-size:13.5px;font-weight:500;color:rgba(255,255,255,.75);cursor:pointer;transition:.2s;margin-bottom:2px;position:relative}
+.sb-item:hover{background:var(--navy-hover);color:#fff}
+.sb-item.active{background:linear-gradient(90deg,rgba(233,30,99,.25),rgba(233,30,99,.05));color:#fff;font-weight:700}
+.sb-item.active::before{content:"";position:absolute;right:0;top:20%;bottom:20%;width:3px;background:#e91e63;border-radius:3px 0 0 3px}
+.sb-item .ico{width:20px;height:20px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8}
+.sb-item .badge{margin-right:auto;background:#e91e63;color:#fff;font-size:10px;font-weight:700;min-width:20px;height:20px;padding:0 6px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);margin-top:20px}
+.sb-logout{width:100%;padding:10px;border-radius:10px;background:rgba(239,68,68,.15);color:#ff8888;font-size:13px;font-weight:600;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+.sb-overlay.show{display:block}
+.main{margin-right:250px;min-height:100vh;transition:margin .3s}
+
+.topbar{background:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.tb-left{display:flex;align-items:center;gap:14px}
+.tb-menu{display:none;width:40px;height:40px;border-radius:10px;background:#f5f6f8;align-items:center;justify-content:center}
+.tb-menu svg{width:20px;height:20px;stroke:#1e2a3a;fill:none;stroke-width:2}
+.tb-title{font-size:18px;font-weight:700;color:#1e2a3a}
+.tb-title small{display:block;font-size:12px;color:#6b7280;font-weight:400;margin-top:2px}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-icon{width:40px;height:40px;border-radius:50%;background:#f5f6f8;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.tb-icon:hover{background:#e8ebef}
+.tb-icon svg{width:19px;height:19px;stroke:#1e2a3a;fill:none;stroke-width:1.8}
+.tb-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a55c,#e8d4a2);display:flex;align-items:center;justify-content:center;font-weight:700;color:#1e2a3a;font-size:15px}
+
+.content{padding:24px}
+.content-page{display:none;animation:fadeIn .3s}
+.content-page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.welcome{margin-bottom:24px}
+.welcome h2{font-size:26px;font-weight:700;color:#1e2a3a;margin-bottom:4px}
+.welcome h2 em{font-style:normal;color:#e91e63}
+.welcome p{color:#6b7280;font-size:14px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:14px;padding:18px;border:1px solid var(--border);transition:.2s}
+.stat-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.05)}
+.stat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stat-head .lbl{font-size:13px;color:#6b7280;font-weight:500}
+.stat-head .ico{width:34px;height:34px;border-radius:10px;background:#f5f6f8;display:flex;align-items:center;justify-content:center}
+.stat-head .ico svg{width:17px;height:17px;stroke:#1e2a3a;fill:none;stroke-width:1.8}
+.stat-value{font-size:26px;font-weight:800;color:#1e2a3a;font-family:'Cormorant Garamond',serif;letter-spacing:-.5px}
+.stat-value small{font-size:13px;color:#6b7280;font-family:'Tajawal',sans-serif;font-weight:500;margin-right:4px}
+
+.card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:20px;margin-bottom:16px}
+.card h3{font-size:16px;font-weight:700;color:#1e2a3a;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+
+.empty-state{text-align:center;padding:40px 20px;color:#6b7280}
+.empty-state .ic{width:70px;height:70px;margin:0 auto 14px;border-radius:50%;background:#fce4ec;display:flex;align-items:center;justify-content:center}
+.empty-state .ic svg{width:32px;height:32px;stroke:#e91e63;fill:none;stroke-width:1.5}
+.empty-state h4{font-size:16px;color:#1e2a3a;margin-bottom:6px;font-weight:700}
+.empty-state p{font-size:13px;max-width:400px;margin:0 auto;line-height:1.6}
+
+.products-list{display:grid;gap:10px}
+.prod-row{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;display:flex;gap:12px;align-items:center;transition:.2s}
+.prod-row:hover{box-shadow:0 4px 14px rgba(0,0,0,.04)}
+.prod-img{width:56px;height:56px;border-radius:10px;background:linear-gradient(160deg,#faf6ef,#ede2cc);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.prod-img svg{width:80%}
+.prod-img img{width:100%;height:100%;object-fit:contain}
+.prod-data{flex:1;min-width:0}
+.prod-data h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#1e2a3a}
+.prod-data .meta{font-size:11.5px;color:#6b7280}
+.prod-data .pr{color:#e91e63;font-weight:700;font-size:13px;margin-top:2px}
+.prod-actions{display:flex;gap:6px;flex-direction:column}
+.action-btn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:.2s;cursor:pointer}
+.action-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+.action-edit{background:#fce4ec;color:#e91e63}
+.action-edit:hover{background:#e91e63;color:#fff}
+.action-del{background:#fee;color:#ef4444}
+.action-del:hover{background:#ef4444;color:#fff}
+
+.fab{position:fixed;bottom:24px;left:24px;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#e91e63,#f06292);color:#fff;font-size:28px;box-shadow:0 12px 32px rgba(233,30,99,.4);cursor:pointer;z-index:80;display:flex;align-items:center;justify-content:center;transition:.2s}
+.fab:hover{transform:scale(1.08)}
+.fab:active{transform:scale(.95)}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:200}
+.modal.show{display:flex;animation:fadeIn .25s}
+.modal-box{background:#fff;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:24px;animation:slideUp .35s cubic-bezier(.2,1,.3,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:sticky;top:0;background:#fff;z-index:10;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.modal-head h3{font-size:20px;font-weight:700;color:#1e2a3a}
+.modal-close{width:36px;height:36px;border-radius:50%;background:#f5f6f8;font-size:18px;color:#6b7280;display:flex;align-items:center;justify-content:center;transition:.2s}
+.modal-close:hover{background:#fee;color:#ef4444}
+
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:#374151;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:#f9fafb;transition:.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#e91e63;background:#fff}
+.field textarea{resize:vertical;min-height:70px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.color-row{display:flex;gap:8px;align-items:center}
+.color-row input[type=color]{width:54px;height:46px;padding:2px;border:1.5px solid var(--border);border-radius:10px;background:#fff;cursor:pointer}
+.color-row input[type=text]{flex:1}
+.notes-block{background:#f9fafb;border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+.notes-block h5{font-size:11.5px;color:#e91e63;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.notes-block input{margin-bottom:6px;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;width:100%;background:#fff;font-size:13.5px}
+.notes-block input:last-child{margin-bottom:0}
+
+.img-block{background:#f9fafb;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.img-block h5{font-size:12px;color:#e91e63;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.img-block h5::before{content:"📷"}
+.img-stage{position:relative;width:100%;background:repeating-conic-gradient(#e8ebef 0% 25%,#fff 0% 50%) 50%/16px 16px;border-radius:12px;overflow:hidden;min-height:200px;display:flex;align-items:center;justify-content:center;cursor:crosshair;border:1.5px dashed #cdd4dc}
+.img-stage:hover{border-color:#e91e63}
+.img-stage canvas{max-width:100%;max-height:300px;display:block;touch-action:none}
+.img-stage .placeholder{text-align:center;color:#9aa2ac;font-size:13px;padding:30px 20px;pointer-events:none}
+.img-stage .placeholder .big{font-size:34px;margin-bottom:8px}
+.img-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.img-controls button{flex:1;min-width:100px;padding:10px 12px;border-radius:10px;font-weight:600;font-size:12.5px;transition:.2s}
+.btn-upload{background:#e91e63;color:#fff}
+.btn-upload:hover{background:#c2185b}
+.btn-reset{background:#f5f6f8;color:#374151}
+.btn-clearimg{background:#fee;color:#ef4444}
+.tol-wrap{margin-top:10px}
+.tol-wrap label{font-size:12px;color:#374151;font-weight:600;display:flex;justify-content:space-between;margin-bottom:6px}
+.tol-wrap label span{color:#e91e63;font-weight:700}
+.tol-wrap input[type=range]{width:100%;accent-color:#e91e63}
+.img-hint{font-size:11px;color:#6b7280;margin-top:8px;line-height:1.5;background:#fff;padding:8px 10px;border-radius:8px;border:1px solid var(--border)}
+
+.modal-actions{display:flex;gap:10px;margin-top:16px}
+.modal-actions .btn{flex:1;padding:14px;border-radius:12px;font-weight:700;font-size:14px;transition:.2s}
+.btn-pink{background:linear-gradient(135deg,#e91e63,#f06292);color:#fff;box-shadow:0 6px 20px rgba(233,30,99,.35)}
+.btn-pink:active{transform:scale(.97)}
+.btn-pink:disabled{opacity:.6}
+.btn-gray{background:#f5f6f8;color:#374151}
+.btn-gray:hover{background:#e8ebef}
+
+.alert{padding:14px 16px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:14px;text-align:center}
+.alert-success{background:#d1fae5;color:#065f46}
+.alert-error{background:#fee2e2;color:#991b1b}
+
+.toast{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background:#1e2a3a;color:#fff;padding:13px 24px;border-radius:30px;font-size:13.5px;font-weight:600;box-shadow:0 12px 40px rgba(0,0,0,.3);transition:bottom .4s cubic-bezier(.5,1.7,.5,1),opacity .3s;z-index:500;white-space:nowrap;opacity:0;pointer-events:none;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{bottom:100px;opacity:1}
+
+.loading{text-align:center;padding:60px 20px;color:#6b7280;font-size:14px}
+.spinner{width:44px;height:44px;border:3px solid #fce4ec;border-top-color:#e91e63;border-radius:50%;margin:0 auto 16px;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border:none}
+.setting-row .set-info h4{font-size:14px;font-weight:600;color:#1e2a3a;margin-bottom:3px}
+.setting-row .set-info p{font-size:12px;color:#6b7280}
+.setting-row .set-val{font-size:13.5px;color:#e91e63;font-weight:700}
+
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border:none}
+.toggle-row .label{font-size:14px;font-weight:600;color:#1e2a3a}
+.switch{position:relative;width:48px;height:28px;background:#cbd5e1;border-radius:14px;cursor:pointer;transition:.3s}
+.switch.on{background:#10b981}
+.switch::after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.switch.on::after{transform:translateX(-20px)}
+
+.faq-edit-item{display:flex;gap:8px;margin-bottom:10px;padding:12px;background:#f9fafb;border:1px solid var(--border);border-radius:12px}
+.faq-edit-item input{flex:1}
+.faq-edit-item .del{width:38px;height:38px;border-radius:10px;background:#fee;color:#ef4444;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(100%)}
+  .sidebar.show{transform:translateX(0)}
+  .main{margin-right:0}
+  .tb-menu{display:flex}
+  .content{padding:16px}
+  .welcome h2{font-size:22px}
+  .field-row{grid-template-columns:1fr}
+  .modal-box{border-radius:20px 20px 0 0;padding:18px}
+}
+@media(max-width:400px){
+  .topbar{padding:12px 14px}
+  .tb-title{font-size:15px}
+  .tb-avatar,.tb-icon{width:36px;height:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="logo">S</div>
+    <h2>لوحة التحكم</h2>
+    <p>أدخل GitHub Token للدخول<br>يُحفظ على جهازك فقط</p>
+    <textarea id="tokenInput" placeholder="ghp_..." autocomplete="off"></textarea>
+    <button class="login-btn" onclick="doLogin()">🔓 دخول</button>
+    <a href="https://github.com/settings/tokens/new?scopes=repo&description=Sentel+Admin" target="_blank">🔗 إنشاء Token جديد</a>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-header">
+      <div class="sb-logo">S</div>
+      <div class="sb-title">SENTEL<small>PARFUMS</small></div>
+    </div>
+    <div class="sb-menu">
+      <div class="sb-item active" data-page="dashboard" onclick="go('dashboard')">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        لوحة التحكم
+      </div>
+      <div class="sb-item" data-page="orders" onclick="go('orders')">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+        الطلبات
+        <span class="badge" id="ordersBadge" style="display:none">0</span>
+      </div>
+      <div class="sb-item" data-page="products" onclick="go('products')">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-14L4 7m8 4v10M4 7v10l8 4"/></svg>
+        المنتجات
+      </div>
+      <div class="sb-section">التخصيص</div>
+      <div class="sb-item" data-page="theme" onclick="go('theme')">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/><circle cx="10" cy="16" r="1.5" fill="currentColor"/><circle cx="15" cy="15" r="1.5" fill="currentColor"/></svg>
+        الألوان والمظهر
+      </div>
+      <div class="sb-item" data-page="store" onclick="go('store')">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        معلومات المتجر
+      </div>
+      <div class="sb-item" data-page="contact" onclick="go('contact')">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        التواصل
+      </div>
+      <div class="sb-item" data-page="shipping" onclick="go('shipping')">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        الشحن والدفع
+      </div>
+      <div class="sb-item" data-page="faq" onclick="go('faq')">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        الأسئلة الشائعة
+      </div>
+      <div class="sb-item" data-page="sections" onclick="go('sections')">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        الأقسام
+      </div>
+      <div class="sb-section">المتجر</div>
+      <div class="sb-item" data-page="settings" onclick="go('settings')">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        الإعدادات
+      </div>
+    </div>
+    <div class="sb-footer">
+      <button class="sb-logout" onclick="logout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="tb-left">
+        <div class="tb-menu" onclick="toggleSidebar()">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </div>
+        <div>
+          <div class="tb-title" id="tbTitle">لوحة التحكم</div>
+          <small style="font-size:11px;color:#6b7280" id="tbSub">SENTEL PARFUMS</small>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-icon" onclick="visitStore()" title="زيارة المتجر">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </div>
+        <div class="tb-avatar">S</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="statusGlobal"></div>
+
+      <!-- DASHBOARD -->
+      <div class="content-page active" id="page-dashboard">
+        <div class="welcome">
+          <h2>أهلاً بعودتك 👋</h2>
+          <p>إدارة كاملة لمتجرك من مكان واحد</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-head"><span class="lbl">📦 الطلبات</span></div><div class="stat-value" id="statOrders">0</div></div>
+          <div class="stat-card"><div class="stat-head"><span class="lbl">💰 المبيعات</span></div><div class="stat-value"><span id="statSales">0</span><small>د.م</small></div></div>
+          <div class="stat-card"><div class="stat-head"><span class="lbl">🛍️ المنتجات</span></div><div class="stat-value" id="statProducts">0</div></div>
+          <div class="stat-card"><div class="stat-head"><span class="lbl">📷 بصور</span></div><div class="stat-value" id="statImages">0</div></div>
+        </div>
+        <div class="card">
+          <h3>🔗 روابط سريعة</h3>
+          <div class="setting-row" style="cursor:pointer" onclick="visitStore()">
+            <div class="set-info"><h4>🌐 زيارة المتجر</h4><p>افتح المتجر في تبويب جديد</p></div>
+            <div class="set-val">فتح ←</div>
+          </div>
+          <div class="setting-row" style="cursor:pointer" onclick="window.open('https://github.com/sentel-shop/sentel-v2','_blank')">
+            <div class="set-info"><h4>🐙 GitHub</h4><p>إدارة الملفات</p></div>
+            <div class="set-val">فتح ←</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="content-page" id="page-orders">
+        <div class="welcome"><h2>الطلبات</h2><p>جميع طلبات العملاء</p></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-head"><span class="lbl">إجمالي</span></div><div class="stat-value" id="ordTotal">0</div></div>
+          <div class="stat-card"><div class="stat-head"><span class="lbl">جديدة</span></div><div class="stat-value" id="ordNew">0</div></div>
+          <div class="stat-card"><div class="stat-head"><span class="lbl">الإيرادات</span></div><div class="stat-value"><span id="ordRevenue">0</span><small>د.م</small></div></div>
+        </div>
+        <div class="card"><h3>القائمة</h3><div id="ordersList"></div></div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="content-page" id="page-products">
+        <div class="welcome"><h2>المنتجات</h2><p>إضافة، تعديل، حذف، ورفع صور</p></div>
+        <div id="productsStatus"></div>
+        <div class="products-list" id="productsList"></div>
+        <button class="fab" onclick="addProduct()">+</button>
+      </div>
+
+      <!-- THEME -->
+      <div class="content-page" id="page-theme">
+        <div class="welcome"><h2>الألوان والمظهر</h2><p>بدّل ألوان المتجر والحواف</p></div>
+        <div class="card" id="themeCard"></div>
+      </div>
+
+      <!-- STORE INFO -->
+      <div class="content-page" id="page-store">
+        <div class="welcome"><h2>معلومات المتجر</h2><p>الاسم، الوصف، Hero</p></div>
+        <div class="card" id="storeCard"></div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="content-page" id="page-contact">
+        <div class="welcome"><h2>معلومات التواصل</h2><p>واتساب، هاتف، عنوان، سوشيال</p></div>
+        <div class="card" id="contactCard"></div>
+      </div>
+
+      <!-- SHIPPING -->
+      <div class="content-page" id="page-shipping">
+        <div class="welcome"><h2>الشحن والدفع</h2><p>تكلفة الشحن وطرق الدفع</p></div>
+        <div class="card" id="shippingCard"></div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="content-page" id="page-faq">
+        <div class="welcome"><h2>الأسئلة الشائعة</h2><p>أضف، عدّل، احذف</p></div>
+        <div class="card" id="faqCard"></div>
+      </div>
+
+      <!-- SECTIONS -->
+      <div class="content-page" id="page-sections">
+        <div class="welcome"><h2>الأقسام</h2><p>إظهار أو إخفاء أقسام الموقع</p></div>
+        <div class="card" id="sectionsCard"></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="content-page" id="page-settings">
+        <div class="welcome"><h2>الإعدادات</h2><p>روابط سريعة وإعدادات</p></div>
+        <div class="card">
+          <h3>الإعدادات</h3>
+          <div class="setting-row" style="cursor:pointer" onclick="visitStore()">
+            <div class="set-info"><h4>🌐 المتجر</h4><p>فتح المتجر</p></div>
+            <div class="set-val">فتح ←</div>
+          </div>
+          <div class="setting-row" style="cursor:pointer" onclick="window.open('https://github.com/sentel-shop/sentel-v2','_blank')">
+            <div class="set-info"><h4>🐙 GitHub</h4><p>إدارة الملفات</p></div>
+            <div class="set-val">فتح ←</div>
+          </div>
+          <div class="setting-row" style="cursor:pointer" onclick="window.open('https://github.com/settings/tokens','_blank')">
+            <div class="set-info"><h4>🔑 GitHub Token</h4><p>إدارة الرموز</p></div>
+            <div class="set-val">فتح ←</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const REPO = 'sentel-shop/sentel-v2';
+const CONFIG_FILE = 'config.js';
+
+let token = localStorage.getItem('gh_token') || '';
+let CFG = null;
+let configSha = '';
+let editingId = null;
+
+// Image state
+let imgCanvas = null;
+let imgCtx = null;
+let originalImageData = null;
+let currentBgColor = null;
+let currentTolerance = 40;
+let hasImage = false;
+let imgDirty = false;
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);}
+function esc(s){return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function fmt(n){return Number(n).toLocaleString('fr-MA');}
+function toB64(s){return btoa(unescape(encodeURIComponent(s)));}
+function fromB64(s){return decodeURIComponent(escape(atob(s.replace(/\s/g,''))));}
+
+/* LOGIN */
+function doLogin(){
+  const t = $('#tokenInput').value.trim();
+  if(!t || t.length < 20){ toast('❌ Token غير صالح'); return; }
+  token = t;
+  localStorage.setItem('gh_token', t);
+  startApp();
+}
+function logout(){
+  if(!confirm('تسجيل الخروج؟')) return;
+  localStorage.removeItem('gh_token');
+  location.reload();
+}
+
+/* NAVIGATION */
+function go(page){
+  $$('.content-page').forEach(p => p.classList.remove('active'));
+  const el = $('#page-' + page);
+  if(el) el.classList.add('active');
+  $$('.sb-item').forEach(i => i.classList.remove('active'));
+  const item = document.querySelector(`.sb-item[data-page="${page}"]`);
+  if(item) item.classList.add('active');
+  const titles = {
+    dashboard:'لوحة التحكم', orders:'الطلبات', products:'المنتجات',
+    theme:'الألوان والمظهر', store:'معلومات المتجر', contact:'التواصل',
+    shipping:'الشحن والدفع', faq:'الأسئلة الشائعة', sections:'الأقسام', settings:'الإعدادات'
+  };
+  $('#tbTitle').textContent = titles[page] || 'لوحة التحكم';
+  if(window.innerWidth <= 768) $('#sidebar').classList.remove('show');
+  if(page === 'orders') renderOrders();
+  if(page === 'theme') renderThemePage();
+  if(page === 'store') renderStorePage();
+  if(page === 'contact') renderContactPage();
+  if(page === 'shipping') renderShippingPage();
+  if(page === 'faq') renderFAQPage();
+  if(page === 'sections') renderSectionsPage();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function toggleSidebar(){
+  $('#sidebar').classList.toggle('show');
+  $('#sbOverlay').classList.toggle('show');
+}
+function visitStore(){
+  window.open('https://sentel-shop.github.io/sentel-v2/','_blank');
+}
+
+/* GITHUB API */
+async function ghGet(path){
+  return fetch(`https://api.github.com/repos/${REPO}/contents/${path}?t=${Date.now()}`, {
+    headers: {'Authorization':'token '+token, 'Accept':'application/vnd.github.v3+json'}
+  });
+}
+async function ghPut(path, content, message, sha){
+  const body = {message, content};
+  if(sha) body.sha = sha;
+  return fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: {'Authorization':'token '+token, 'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+}
+async function ghDelete(path, sha, message){
+  return fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'DELETE',
+    headers: {'Authorization':'token '+token, 'Content-Type':'application/json'},
+    body: JSON.stringify({message, sha})
+  });
+}
+
+/* LOAD CONFIG */
+async function loadConfig(){
+  const r = await ghGet(CONFIG_FILE);
+  if(!r.ok) throw new Error('فشل تحميل config.js');
+  const d = await r.json();
+  configSha = d.sha;
+  const content = fromB64(d.content);
+  // Extract window.CONFIG = {...}
+  const match = content.match(/window\.CONFIG\s*=\s*(\{[\s\S]*\});?\s*$/);
+  if(!match) throw new Error('صيغة config.js غير صحيحة');
+  CFG = eval('(' + match[1] + ')');
+  updateStats();
+}
+
+/* SAVE CONFIG */
+async function saveConfig(silent){
+  const status = $('#statusGlobal');
+  if(!silent) status.innerHTML = '<div class="loading"><div class="spinner"></div>جاري الحفظ...</div>';
+  try {
+    const r = await ghGet(CONFIG_FILE);
+    const d = await r.json();
+    configSha = d.sha;
+    const newContent = 'window.CONFIG = ' + JSON.stringify(CFG, null, 2) + ';\n';
+    const r2 = await ghPut(CONFIG_FILE, toB64(newContent), 'تحديث من لوحة التحكم', configSha);
+    if(!r2.ok){ const err = await r2.json(); throw new Error(err.message); }
+    if(!silent){
+      status.innerHTML = '<div class="alert alert-success">✅ تم الحفظ! سيظهر على المتجر خلال 1-2 دقيقة</div>';
+      setTimeout(() => status.innerHTML = '', 5000);
+    }
+    toast('✅ تم الحفظ');
+    return true;
+  } catch(e){
+    status.innerHTML = `<div class="alert alert-error">❌ ${esc(e.message)}</div>`;
+    toast('❌ فشل الحفظ');
+    return false;
+  }
+}
+
+/* STATS */
+function updateStats(){
+  $('#statProducts').textContent = CFG.products.length;
+  $('#statImages').textContent = CFG.products.filter(p => p.img).length;
+  const orders = JSON.parse(localStorage.getItem('sentel_orders') || '[]');
+  $('#statOrders').textContent = orders.length;
+  $('#statSales').textContent = fmt(orders.reduce((s,o) => s + (o.total || 0), 0));
+  const newOrders = orders.filter(o => o.status === 'new').length;
+  const badge = $('#ordersBadge');
+  if(newOrders > 0){ badge.textContent = newOrders; badge.style.display = 'flex'; }
+  else badge.style.display = 'none';
+}
+
+/* ORDERS */
+function renderOrders(){
+  const orders = JSON.parse(localStorage.getItem('sentel_orders') || '[]');
+  $('#ordTotal').textContent = orders.length;
+  $('#ordNew').textContent = orders.filter(o => o.status === 'new').length;
+  $('#ordRevenue').textContent = fmt(orders.reduce((s,o) => s + (o.total||0), 0));
+  if(!orders.length){
+    $('#ordersList').innerHTML = '<div class="empty-state"><div class="ic">📦</div><h4>لا توجد طلبات</h4><p>ستظهر هنا عندما يطلب عملاء من متجرك</p></div>';
+    return;
+  }
+  $('#ordersList').innerHTML = orders.map(o => `
+    <div class="prod-row">
+      <div class="prod-data">
+        <h4>${esc(o.name)}</h4>
+        <div class="meta">📞 ${esc(o.phone)} · ${esc(o.city)}</div>
+        <div class="pr">${esc(o.product)} — ${fmt(o.total)} د.م</div>
+      </div>
+      <div style="font-size:11px;color:#6b7280">${esc(o.date||'')}</div>
+    </div>
+  `).join('');
+}
+
+/* PRODUCTS */
+function miniBottle(p){
+  if(p.img) return `<img src="${p.img}?t=${Date.now()}" alt="${esc(p.name)}">`;
+  const c1 = (p.color && p.color[0]) || '#c9a55c';
+  const c2 = (p.color && p.color[1]) || '#8c5a5a';
+  const uid = 'mg'+p.id+Math.random().toString(36).slice(2,5);
+  return `<svg viewBox="0 0 100 100"><defs><linearGradient id="${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect x="30" y="35" width="40" height="55" rx="6" fill="url(#${uid})"/><rect x="42" y="22" width="16" height="14" rx="3" fill="#c9a55c"/><rect x="38" y="15" width="24" height="8" rx="2" fill="#c9a55c"/></svg>`;
+}
+function renderProducts(){
+  const list = $('#productsList');
+  if(!CFG.products.length){
+    list.innerHTML = '<div class="card"><div class="empty-state"><div class="ic">📦</div><h4>لا توجد منتجات</h4><p>اضغط + لإضافة منتج</p></div></div>';
+    return;
+  }
+  list.innerHTML = CFG.products.map(p => `
+    <div class="prod-row">
+      <div class="prod-img">${miniBottle(p)}</div>
+      <div class="prod-data">
+        <h4>${esc(p.name)}</h4>
+        <div class="meta">${esc(p.cat)} · ${esc(p.size)}${p.img?' · 📷':''}</div>
+        <div class="pr">${fmt(p.price)} د.م</div>
+      </div>
+      <div class="prod-actions">
+        <button class="action-btn action-edit" onclick="editProduct(${p.id})" title="تعديل">✏️</button>
+        <button class="action-btn action-del" onclick="deleteProduct(${p.id})" title="حذف">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+  updateStats();
+}
+function addProduct(){
+  editingId = null;
+  const nextId = Math.max(0, ...CFG.products.map(p => p.id)) + 1;
+  showProductForm({id:nextId,name:'',cat:'نسائي',size:'50ml',price:300,color:['#c9a55c','#8c5a5a'],badge:'',img:'',notes:{top:['','',''],heart:['',''],base:['','']}});
+}
+function editProduct(id){
+  const p = CFG.products.find(x => x.id === id);
+  if(p){ editingId = id; showProductForm(JSON.parse(JSON.stringify(p))); }
+}
+function showProductForm(p){
+  const t = (p.notes && p.notes.top) || ['','',''];
+  const h = (p.notes && p.notes.heart) || ['',''];
+  const b = (p.notes && p.notes.base) || ['',''];
+  hasImage = !!p.img;
+  imgDirty = false;
+  currentBgColor = null;
+
+  openModal(`
+    <div class="modal-head">
+      <h3>${editingId ? 'تعديل منتج' : 'منتج جديد'}</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="field"><label>اسم المنتج</label><input id="f_name" value="${esc(p.name)}" placeholder="Rose Élégante"></div>
+    <div class="field-row">
+      <div class="field"><label>الفئة</label><input id="f_cat" value="${esc(p.cat)}" placeholder="نسائي"></div>
+      <div class="field"><label>الحجم</label><input id="f_size" value="${esc(p.size)}" placeholder="50ml"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>السعر (د.م)</label><input id="f_price" type="number" value="${p.price}"></div>
+      <div class="field"><label>شارة</label><input id="f_badge" value="${esc(p.badge)}" placeholder="جديد"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>اللون 1</label><div class="color-row"><input id="f_color1" type="color" value="${p.color[0]}"><input id="f_color1t" type="text" value="${p.color[0]}" readonly></div></div>
+      <div class="field"><label>اللون 2</label><div class="color-row"><input id="f_color2" type="color" value="${p.color[1]}"><input id="f_color2t" type="text" value="${p.color[1]}" readonly></div></div>
+    </div>
+
+    <div class="img-block">
+      <h5>صورة المنتج + إزالة الخلفية</h5>
+      <div class="img-stage" id="imgStage" onclick="pickColor(event)">
+        <div class="placeholder" id="imgPlaceholder">
+          <div class="big">📷</div>
+          اختر صورة منتج<br><small style="font-size:11px">يُفضل صورة بخلفية موحدة</small>
+        </div>
+        <canvas id="imgCanvas" style="display:none"></canvas>
+      </div>
+      <div class="img-controls">
+        <button type="button" class="btn-upload" onclick="document.getElementById('imgFileInput').click()">📤 اختر صورة</button>
+        <button type="button" class="btn-reset" onclick="resetImage()" id="btnReset" style="display:none">↺ إعادة</button>
+        <button type="button" class="btn-clearimg" onclick="clearImage()" id="btnClearImg" style="display:none">🗑️ إزالة</button>
+      </div>
+      <input type="file" id="imgFileInput" accept="image/*" hidden>
+      <div class="tol-wrap" id="tolWrap" style="display:none">
+        <label>حساسية إزالة الخلفية: <span id="tolVal">40</span></label>
+        <input type="range" id="bgTolerance" min="0" max="150" value="40">
+      </div>
+      <div class="img-hint" id="imgHint" style="display:none">💡 اضغط على خلفية الصورة لحذفها</div>
+    </div>
+
+    <div class="notes-block"><h5>🌸 TOP NOTES</h5>
+      <input id="f_top0" value="${esc(t[0])}" placeholder="ورد دمشقي">
+      <input id="f_top1" value="${esc(t[1])}" placeholder="ليتشي">
+      <input id="f_top2" value="${esc(t[2])}" placeholder="برغموت">
+    </div>
+    <div class="notes-block"><h5>💗 HEART NOTES</h5>
+      <input id="f_heart0" value="${esc(h[0])}" placeholder="ياسمين">
+      <input id="f_heart1" value="${esc(h[1])}" placeholder="بيوني">
+    </div>
+    <div class="notes-block"><h5>🌿 BASE NOTES</h5>
+      <input id="f_base0" value="${esc(b[0])}" placeholder="مسك أبيض">
+      <input id="f_base1" value="${esc(b[1])}" placeholder="عنبر">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-pink" onclick="saveProduct()" id="saveBtn">💾 حفظ</button>
+      <button class="btn-gray" onclick="closeModal()">إلغاء</button>
+    </div>
+  `);
+
+  imgCanvas = $('#imgCanvas');
+  imgCtx = imgCanvas.getContext('2d', {willReadFrequently:true});
+  $('#f_color1').oninput = e => $('#f_color1t').value = e.target.value;
+  $('#f_color2').oninput = e => $('#f_color2t').value = e.target.value;
+  $('#imgFileInput').onchange = handleFileSelect;
+  $('#bgTolerance').oninput = e => { currentTolerance = +e.target.value; $('#tolVal').textContent = currentTolerance; if(currentBgColor) applyBgRemoval(); };
+
+  if(p.img){
+    loadExistingImage(p.img);
+  }
+}
+
+/* IMAGE HANDLING */
+function loadExistingImage(path){
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    setupCanvas(img);
+    $('#imgPlaceholder').style.display = 'none';
+    imgCanvas.style.display = 'block';
+    $('#btnReset').style.display = 'block';
+    $('#btnClearImg').style.display = 'block';
+    $('#imgHint').style.display = 'block';
+    $('#tolWrap').style.display = 'block';
+    imgDirty = false;
+  };
+  img.onerror = () => console.warn('Could not load image');
+  img.src = path + '?t=' + Date.now();
+}
+function handleFileSelect(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 8 * 1024 * 1024){ toast('❌ الصورة كبيرة (8MB حد)'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      setupCanvas(img);
+      $('#imgPlaceholder').style.display = 'none';
+      imgCanvas.style.display = 'block';
+      $('#btnReset').style.display = 'block';
+      $('#btnClearImg').style.display = 'block';
+      $('#imgHint').style.display = 'block';
+      $('#tolWrap').style.display = 'block';
+      hasImage = true;
+      imgDirty = true;
+      currentBgColor = null;
+      toast('✓ تم رفع الصورة — اضغط على الخلفية');
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function setupCanvas(img){
+  const maxDim = 800;
+  let w = img.width, h = img.height;
+  if(Math.max(w,h) > maxDim){
+    if(w > h){ h = h * (maxDim/w); w = maxDim; }
+    else { w = w * (maxDim/h); h = maxDim; }
+  }
+  imgCanvas.width = w;
+  imgCanvas.height = h;
+  imgCtx.clearRect(0,0,w,h);
+  imgCtx.drawImage(img, 0, 0, w, h);
+  originalImageData = imgCtx.getImageData(0, 0, w, h);
+}
+function pickColor(e){
+  if(!originalImageData) return;
+  const rect = imgCanvas.getBoundingClientRect();
+  const scaleX = imgCanvas.width / rect.width;
+  const scaleY = imgCanvas.height / rect.height;
+  const x = Math.floor((e.clientX - rect.left) * scaleX);
+  const y = Math.floor((e.clientY - rect.top) * scaleY);
+  if(x < 0 || y < 0 || x >= imgCanvas.width || y >= imgCanvas.height) return;
+  const data = originalImageData.data;
+  const idx = (y * imgCanvas.width + x) * 4;
+  currentBgColor = [data[idx], data[idx+1], data[idx+2]];
+  applyBgRemoval();
+  toast('🎨 تم تحديد الخلفية');
+}
+function applyBgRemoval(){
+  if(!originalImageData || !currentBgColor) return;
+  const w = imgCanvas.width, h = imgCanvas.height;
+  const src = originalImageData.data;
+  const out = imgCtx.createImageData(w, h);
+  const dst = out.data;
+  const [br, bg, bb] = currentBgColor;
+  const tol = currentTolerance;
+  for(let i = 0; i < src.length; i += 4){
+    const r = src[i], g = src[i+1], b = src[i+2];
+    const diff = Math.sqrt((r-br)**2 + (g-bg)**2 + (b-bb)**2);
+    if(diff <= tol){ dst[i]=dst[i+1]=dst[i+2]=dst[i+3]=0; }
+    else { dst[i]=r; dst[i+1]=g; dst[i+2]=b; dst[i+3]=src[i+3]; }
+  }
+  imgCtx.putImageData(out, 0, 0);
+  imgDirty = true;
+}
+function resetImage(){
+  if(!originalImageData) return;
+  imgCtx.putImageData(originalImageData, 0, 0);
+  currentBgColor = null;
+  imgDirty = true;
+  toast('↺ تم استرجاع الصورة');
+}
+function clearImage(){
+  if(!confirm('إزالة الصورة؟')) return;
+  originalImageData = null;
+  currentBgColor = null;
+  hasImage = false;
+  imgDirty = true;
+  $('#imgPlaceholder').style.display = 'block';
+  imgCanvas.style.display = 'none';
+  $('#btnReset').style.display = 'none';
+  $('#btnClearImg').style.display = 'none';
+  $('#imgHint').style.display = 'none';
+  $('#tolWrap').style.display = 'none';
+  $('#imgFileInput').value = '';
+}
+
+/* SAVE PRODUCT */
+async function saveProduct(){
+  const p = {
+    id: editingId || Math.max(0, ...CFG.products.map(x => x.id)) + 1,
+    name: $('#f_name').value.trim(),
+    cat: $('#f_cat').value.trim() || 'نسائي',
+    size: $('#f_size').value.trim() || '50ml',
+    price: +$('#f_price').value || 0,
+    color: [$('#f_color1').value, $('#f_color2').value],
+    badge: $('#f_badge').value.trim(),
+    img: '',
+    notes: {
+      top: [$('#f_top0').value.trim(), $('#f_top1').value.trim(), $('#f_top2').value.trim()].filter(Boolean),
+      heart: [$('#f_heart0').value.trim(), $('#f_heart1').value.trim()].filter(Boolean),
+      base: [$('#f_base0').value.trim(), $('#f_base1').value.trim()].filter(Boolean)
+    }
+  };
+  if(!p.name){ toast('❌ أدخل اسم المنتج'); return; }
+  if(!p.price){ toast('❌ أدخل السعر'); return; }
+
+  const btn = $('#saveBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري الحفظ...';
+
+  try {
+    const prev = editingId ? CFG.products.find(x => x.id === editingId) : null;
+    if(prev && prev.img && !imgDirty) p.img = prev.img;
+
+    if(imgDirty && hasImage && imgCanvas && imgCanvas.width > 0){
+      const path = await uploadImage(p.id);
+      p.img = path;
+    }
+
+    if(editingId){
+      const i = CFG.products.findIndex(x => x.id === editingId);
+      CFG.products[i] = p;
+    } else {
+      CFG.products.push(p);
+    }
+
+    closeModal();
+    renderProducts();
+    await saveConfig();
+  } catch(e){
+    btn.disabled = false;
+    btn.textContent = '💾 حفظ';
+    toast('❌ ' + e.message);
+  }
+}
+
+/* UPLOAD IMAGE */
+async function uploadImage(productId){
+  const dataUrl = imgCanvas.toDataURL('image/png');
+  const base64Data = dataUrl.split(',')[1];
+  const path = `images/product-${productId}.png`;
+  let sha = null;
+  const r1 = await ghGet(path);
+  if(r1.ok){ const d = await r1.json(); sha = d.sha; }
+  const r2 = await ghPut(path, base64Data, `صورة المنتج ${productId}`, sha);
+  if(!r2.ok){ const err = await r2.json(); throw new Error(err.message || 'فشل رفع الصورة'); }
+  return path;
+}
+
+/* DELETE PRODUCT */
+async function deleteProduct(id){
+  if(!confirm('حذف هذا المنتج؟')) return;
+  const p = CFG.products.find(x => x.id === id);
+  if(p && p.img){
+    try {
+      const r = await ghGet(p.img);
+      if(r.ok){ const d = await r.json(); await ghDelete(p.img, d.sha, 'حذف صورة'); }
+    } catch(e){}
+  }
+  CFG.products = CFG.products.filter(x => x.id !== id);
+  renderProducts();
+  saveConfig();
+}
+
+/* THEME PAGE */
+function renderThemePage(){
+  const c = CFG.theme.colors;
+  $('#themeCard').innerHTML = `
+    <h3>🎨 الألوان</h3>
+    <div class="field-row">
+      <div class="field"><label>اللون الرئيسي (ذهبي)</label><div class="color-row"><input type="color" id="t_primary" value="${c.primary}"><input type="text" id="t_primary_t" value="${c.primary}" readonly></div></div>
+      <div class="field"><label>اللون الفاتح</label><div class="color-row"><input type="color" id="t_primaryLight" value="${c.primaryLight}"><input type="text" id="t_primaryLight_t" value="${c.primaryLight}" readonly></div></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>الخلفية الداكنة</label><div class="color-row"><input type="color" id="t_dark" value="${c.dark}"><input type="text" id="t_dark_t" value="${c.dark}" readonly></div></div>
+      <div class="field"><label>لون التمييز</label><div class="color-row"><input type="color" id="t_accent" value="${c.accent}"><input type="text" id="t_accent_t" value="${c.accent}" readonly></div></div>
+    </div>
+    <h3 style="margin-top:20px">📐 الشكل</h3>
+    <div class="field"><label>استدارة الحواف: <span id="r_val">${CFG.theme.radius}px</span></label><input type="range" id="t_radius" min="0" max="30" value="${CFG.theme.radius}" oninput="document.getElementById('r_val').textContent=this.value+'px'"></div>
+    <h3 style="margin-top:20px">⚡ الحركات</h3>
+    <div class="field"><label>سرعة تبديل Hero: <span id="h_val">${CFG.theme.animation.heroRotation} ث</span></label><input type="range" id="t_hero" min="3" max="30" value="${CFG.theme.animation.heroRotation}" oninput="document.getElementById('h_val').textContent=this.value+' ث'"></div>
+    <div class="modal-actions"><button class="btn-pink" onclick="saveTheme()">💾 حفظ التعديلات</button></div>
+  `;
+  // Bind color previews
+  ['primary','primaryLight','dark','accent'].forEach(k => {
+    const inp = $('#t_'+k);
+    const txt = $('#t_'+k+'_t');
+    if(inp) inp.oninput = e => txt.value = e.target.value;
+  });
+}
+async function saveTheme(){
+  CFG.theme.colors.primary = $('#t_primary').value;
+  CFG.theme.colors.primaryLight = $('#t_primaryLight').value;
+  CFG.theme.colors.dark = $('#t_dark').value;
+  CFG.theme.colors.accent = $('#t_accent').value;
+  CFG.theme.radius = +$('#t_radius').value;
+  CFG.theme.animation.heroRotation = +$('#t_hero').value;
+  await saveConfig();
+}
+
+/* STORE PAGE */
+function renderStorePage(){
+  const s = CFG.store;
+  const h = CFG.hero;
+  $('#storeCard').innerHTML = `
+    <h3>🏪 معلومات المتجر</h3>
+    <div class="field"><label>اسم المتجر</label><input id="s_name" value="${esc(s.name)}"></div>
+    <div class="field"><label>العنوان الفرعي</label><input id="s_subtitle" value="${esc(s.subtitle)}"></div>
+    <div class="field"><label>الوصف</label><textarea id="s_desc">${esc(s.description)}</textarea></div>
+    <div class="field"><label>حرف الشعار</label><input id="s_letter" value="${esc(s.logoLetter)}" maxlength="2"></div>
+    <h3 style="margin-top:20px">🎬 قسم Hero</h3>
+    <div class="field"><label>السطر الصغير</label><input id="h_eyebrow" value="${esc(h.eyebrow)}"></div>
+    <div class="field"><label>السطر 1</label><input id="h_l1" value="${esc(h.titleLine1)}"></div>
+    <div class="field"><label>السطر 2</label><input id="h_l2" value="${esc(h.titleLine2)}"></div>
+    <div class="field"><label>الكلمة المميزة</label><input id="h_accent" value="${esc(h.titleAccent)}"></div>
+    <div class="modal-actions"><button class="btn-pink" onclick="saveStore()">💾 حفظ</button></div>
+  `;
+}
+async function saveStore(){
+  CFG.store.name = $('#s_name').value.trim();
+  CFG.store.subtitle = $('#s_subtitle').value.trim();
+  CFG.store.description = $('#s_desc').value.trim();
+  CFG.store.logoLetter = $('#s_letter').value.trim() || 'S';
+  CFG.hero.eyebrow = $('#h_eyebrow').value.trim();
+  CFG.hero.titleLine1 = $('#h_l1').value.trim();
+  CFG.hero.titleLine2 = $('#h_l2').value.trim();
+  CFG.hero.titleAccent = $('#h_accent').value.trim();
+  await saveConfig();
+}
+
+/* CONTACT PAGE */
+function renderContactPage(){
+  const c = CFG.contact;
+  $('#contactCard').innerHTML = `
+    <h3>📞 التواصل</h3>
+    <div class="field"><label>رقم واتساب (بصيغة 212XXXXXXXXX)</label><input id="c_wa" value="${esc(c.whatsapp)}" placeholder="212600000000"></div>
+    <div class="field"><label>البريد الإلكتروني</label><input id="c_email" value="${esc(c.email)}"></div>
+    <div class="field"><label>رقم الهاتف</label><input id="c_phone" value="${esc(c.phone)}"></div>
+    <div class="field"><label>العنوان</label><input id="c_address" value="${esc(c.address)}"></div>
+    <div class="field-row">
+      <div class="field"><label>أوقات العمل</label><input id="c_hw" value="${esc(c.hoursWeek)}"></div>
+      <div class="field"><label>الأحد</label><input id="c_hs" value="${esc(c.hoursSunday)}"></div>
+    </div>
+    <h3 style="margin-top:20px">🌐 روابط السوشيال</h3>
+    <div class="field"><label>Instagram</label><input id="c_ig" value="${esc(c.instagram)}" placeholder="https://instagram.com/..."></div>
+    <div class="field"><label>Facebook</label><input id="c_fb" value="${esc(c.facebook)}"></div>
+    <div class="field"><label>TikTok</label><input id="c_tt" value="${esc(c.tiktok)}"></div>
+    <h3 style="margin-top:20px">📊 Google Sheets</h3>
+    <div class="field"><label>رابط Google Apps Script (اختياري)</label><input id="c_sheets" value="${esc(c.googleSheetsUrl)}" placeholder="https://script.google.com/macros/s/.../exec"></div>
+    <div class="modal-actions"><button class="btn-pink" onclick="saveContact()">💾 حفظ</button></div>
+  `;
+}
+async function saveContact(){
+  CFG.contact.whatsapp = $('#c_wa').value.trim();
+  CFG.contact.email = $('#c_email').value.trim();
+  CFG.contact.phone = $('#c_phone').value.trim();
+  CFG.contact.address = $('#c_address').value.trim();
+  CFG.contact.hoursWeek = $('#c_hw').value.trim();
+  CFG.contact.hoursSunday = $('#c_hs').value.trim();
+  CFG.contact.instagram = $('#c_ig').value.trim();
+  CFG.contact.facebook = $('#c_fb').value.trim();
+  CFG.contact.tiktok = $('#c_tt').value.trim();
+  CFG.contact.googleSheetsUrl = $('#c_sheets').value.trim();
+  await saveConfig();
+}
+
+/* SHIPPING PAGE */
+function renderShippingPage(){
+  const s = CFG.shipping;
+  const p = CFG.payment;
+  $('#shippingCard').innerHTML = `
+    <h3>🚚 الشحن</h3>
+    <div class="field-row">
+      <div class="field"><label>داخل أكادير (د.م)</label><input type="number" id="sh_ag" value="${s.agadir}"></div>
+      <div class="field"><label>باقي المدن (د.م)</label><input type="number" id="sh_mo" value="${s.morocco}"></div>
+    </div>
+    <div class="field"><label>شحن مجاني فوق (د.م)</label><input type="number" id="sh_free" value="${s.freeFrom}"></div>
+    <h3 style="margin-top:20px">💳 طرق الدفع</h3>
+    <div class="toggle-row"><span class="label">💵 الدفع عند الاستلام</span><div class="switch ${p.cod?'on':''}" onclick="this.classList.toggle('on')" data-key="cod"></div></div>
+    <div class="toggle-row"><span class="label">💳 البطاقة البنكية</span><div class="switch ${p.cmi?'on':''}" onclick="this.classList.toggle('on')" data-key="cmi"></div></div>
+    <div class="toggle-row"><span class="label">🏦 تحويل بنكي</span><div class="switch ${p.bank?'on':''}" onclick="this.classList.toggle('on')" data-key="bank"></div></div>
+    <div class="toggle-row"><span class="label">📲 محفظة الهاتف</span><div class="switch ${p.wallet?'on':''}" onclick="this.classList.toggle('on')" data-key="wallet"></div></div>
+    <div class="toggle-row"><span class="label">📱 PayPal</span><div class="switch ${p.paypal?'on':''}" onclick="this.classList.toggle('on')" data-key="paypal"></div></div>
+    <div class="modal-actions"><button class="btn-pink" onclick="saveShipping()">💾 حفظ</button></div>
+  `;
+}
+async function saveShipping(){
+  CFG.shipping.agadir = +$('#sh_ag').value || 0;
+  CFG.shipping.morocco = +$('#sh_mo').value || 0;
+  CFG.shipping.freeFrom = +$('#sh_free').value || 0;
+  $$('.switch').forEach(sw => { CFG.payment[sw.dataset.key] = sw.classList.contains('on'); });
+  await saveConfig();
+}
+
+/* FAQ PAGE */
+function renderFAQPage(){
+  $('#faqCard').innerHTML = `
+    <h3>❓ الأسئلة الشائعة</h3>
+    <div id="faqList">${CFG.faq.map((f,i) => `
+      <div class="faq-edit-item">
+        <div style="flex:1">
+          <input data-i="${i}" data-f="q" value="${esc(f.q)}" placeholder="السؤال" style="margin-bottom:6px;width:100%;padding:10px;border:1.5px solid #e8ebef;border-radius:8px">
+          <input data-i="${i}" data-f="a" value="${esc(f.a)}" placeholder="الإجابة" style="width:100%;padding:10px;border:1.5px solid #e8ebef;border-radius:8px">
+        </div>
+        <button class="del" onclick="removeFAQ(${i})">✕</button>
+      </div>
+    `).join('')}</div>
+    <button class="btn-gray" style="width:100%;padding:12px;border-radius:10px;margin-top:10px" onclick="addFAQField()">➕ إضافة سؤال جديد</button>
+    <div class="modal-actions"><button class="btn-pink" onclick="saveFAQ()">💾 حفظ</button></div>
+  `;
+}
+function addFAQField(){
+  CFG.faq.push({q:'',a:''});
+  renderFAQPage();
+}
+function removeFAQ(i){
+  CFG.faq.splice(i, 1);
+  renderFAQPage();
+}
+async function saveFAQ(){
+  $$('#faqList input').forEach(inp => {
+    const i = +inp.dataset.i;
+    const f = inp.dataset.f;
+    if(CFG.faq[i]) CFG.faq[i][f] = inp.value.trim();
+  });
+  CFG.faq = CFG.faq.filter(f => f.q && f.a);
+  await saveConfig();
+}
+
+/* SECTIONS PAGE */
+function renderSectionsPage(){
+  const s = CFG.sections;
+  const labels = {hero:'🎬 القسم الرئيسي', notes:'🌸 النوتات العطرية', carousel:'🎠 التشكيلة الدائرية', products:'🛍️ المنتجات', faq:'❓ الأسئلة الشائعة', newsletter:'📧 النشرة البريدية', footer:'📄 الفوتر'};
+  $('#sectionsCard').innerHTML = `
+    <h3>👁️ إظهار / إخفاء الأقسام</h3>
+    ${Object.entries(labels).map(([k,v]) => `
+      <div class="toggle-row"><span class="label">${v}</span><div class="switch ${s[k]?'on':''}" onclick="this.classList.toggle('on')" data-section="${k}"></div></div>
+    `).join('')}
+    <div class="modal-actions"><button class="btn-pink" onclick="saveSections()">💾 حفظ</button></div>
+  `;
+}
+async function saveSections(){
+  $$('.switch').forEach(sw => { CFG.sections[sw.dataset.section] = sw.classList.contains('on'); });
+  await saveConfig();
+}
+
+/* MODAL */
+function openModal(html){ $('#modalContent').innerHTML = html; $('#modal').classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeModal(){ $('#modal').classList.remove('show'); editingId = null; imgCanvas = null; imgCtx = null; originalImageData = null; currentBgColor = null; hasImage = false; imgDirty = false; document.body.style.overflow = ''; }
+
+/* START */
+async function startApp(){
+  $('#loginWrap').style.display = 'none';
+  $('#app').classList.add('show');
+  try {
+    await loadConfig();
+    renderProducts();
+    $('#tbSub').textContent = CFG.store.name + ' ' + CFG.store.subtitle;
+  } catch(e){
+    $('#statusGlobal').innerHTML = `<div class="alert alert-error">❌ ${esc(e.message)}</div>`;
+  }
+}
+
+if(token){ $('#tokenInput').value = token; startApp(); }
+</script>
+</body>
+</html>
